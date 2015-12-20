@@ -88,6 +88,7 @@
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpDeleteCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldRequest.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpGetToken.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpHeartbeat.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterList.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacterError.cs" />

@@ -78,7 +78,8 @@ namespace WorldServer.Emu.Processors
                     connection.Characters = new List<CharacterData>();
                 
                 new SpCharacterList(connection.Account, connection.Characters).Send(connection);
-            }           
+                new SpUnk2().Send(connection, false); // Its being sent after 0xc95, 16 length
+            }
         }
 
         public void CreateCharacterProcess(ClientConnection connection, CharacterData info)
@@ -149,7 +150,6 @@ namespace WorldServer.Emu.Processors
         public void PrepareForEnterOnWorld(ClientConnection connection, long characterId)
         {
             new SpEnterOnWorldResponse().Send(connection, false);
-            //new SpUnk2().Send(connection, false);
         }
 
         public object OnUnload()
