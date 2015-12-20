@@ -95,6 +95,7 @@
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpEnterOnWorldResponse.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpRaw.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk2.cs" />
     <Compile Include="Emu\Networking\Handling\PacketHandler.cs" />
     <Compile Include="Emu\Networking\NetworkService.cs" />
     <Compile Include="Emu\Networking\TcpServer.cs" />

@@ -47,7 +47,7 @@ namespace WorldServer.Emu.Networking.Handling
                 Buffer.BlockCopy(temp, 0, packet, 2, templen); //copy encrypted datas in packet
             }
 
-            Log.Debug($"RAW\n{packet.FormatHex()}");
+            Log.Debug(string.Format("RAW 0x{0:X4} \n{1}", opCode, packet.FormatHex()));
             client.Socket.BeginSend(packet, 0, packet.Length, SocketFlags.None, null, null); //send packet datas to client
         }
 

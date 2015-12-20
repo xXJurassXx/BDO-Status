@@ -22,6 +22,7 @@ namespace WorldServer.Emu.Networking.Handling
             ClientFrames.TryAdd(0x0CDB, typeof(RpEnterOnWorldRequest));
 
             ServerFrames.TryAdd(typeof(SpUnk), 0x0c98);
+            ServerFrames.TryAdd(typeof(SpUnk2), 0x0c74);
             ServerFrames.TryAdd(typeof(SpCharacterList), 0x0c95);
             ServerFrames.TryAdd(typeof(SpCreateCharacter), 0x0be1);
             ServerFrames.TryAdd(typeof(SpCreateCharacterError), 0x0be2); 

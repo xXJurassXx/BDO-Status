@@ -78,6 +78,7 @@ namespace WorldServer.Emu.Processors
                     connection.Characters = new List<CharacterData>();
                 
                 new SpCharacterList(connection.Account, connection.Characters).Send(connection);
+                new SpUnk2().Send(connection, false);
             }           
         }
 
@@ -148,7 +149,7 @@ namespace WorldServer.Emu.Processors
 
         public void PrepareForEnterOnWorld(ClientConnection connection, long characterId)
         {
-            new SpEnterOnWorldResponse().Send(connection);
+            new SpEnterOnWorldResponse().Send(connection, false);
         }
 
         public object OnUnload()
