@@ -33,6 +33,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Commons">
+      <HintPath>..\Commons\bin\Debug\Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\BlackDesertEmu\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\BlackDesertEmu\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\BlackDesertEmu\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\BlackDesertEmu\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\BlackDesertEmu\packages\NLog.4.2.2\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,12 +66,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configs\CfgDatabase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>CfgDatabase.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Configs\CfgNetwork.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>CfgNetwork.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Emu\Core.cs" />
+    <Compile Include="Emu\Extensions\DaoExt.cs" />
+    <Compile Include="Emu\Extensions\EnumExt.cs" />
+    <Compile Include="Emu\Interfaces\IProcessor.cs" />
+    <Compile Include="Emu\Models\MySql\Mapping\WorldMap\CharacterMap.cs" />
+    <Compile Include="Emu\Models\MySql\Mapping\LoginMap\UserMap.cs" />
+    <Compile Include="Emu\Networking\ClientConnection.cs" />
+    <Compile Include="Emu\Networking\Handling\APacketProcessor.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpCreateCharacter.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpDeleteCharacter.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpGetToken.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterList.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacter.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacterError.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpDeleteCharacter.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk.cs" />
+    <Compile Include="Emu\Networking\Handling\PacketHandler.cs" />
+    <Compile Include="Emu\Networking\NetworkService.cs" />
+    <Compile Include="Emu\Networking\TcpServer.cs" />
+    <Compile Include="Emu\Processors\AuthProcessor.cs" />
+    <Compile Include="Emu\Processors\LobbyProcessor.cs" />
     <Compile Include="WorldServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Configs\CfgDatabase.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>CfgDatabase.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Configs\CfgNetwork.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>CfgNetwork.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

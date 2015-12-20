@@ -3,7 +3,6 @@
 */
 using System;
 using System.Net.Sockets;
-using Commons.Utils;
 
 namespace LoginServer.Emu.Networking.Handling
 {
@@ -42,10 +41,6 @@ namespace LoginServer.Emu.Networking.Handling
                 client.Session.Transform(ref temp); //encrypt datas in temp
 
                 Buffer.BlockCopy(temp, 0, packet, 2, templen); //copy encrypted datas in packet
-
-#if DEBUG
-                Console.WriteLine($"Sent crypted packet {GetType().Name}\nData: {packet.FormatHex()}");
-#endif
             }
 
             client.Socket.BeginSend(packet, 0, packet.Length, SocketFlags.None, null, null); //send packet datas to client

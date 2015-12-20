@@ -30,12 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\BlackDesertEmu\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\BlackDesertEmu\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\BlackDesertEmu\packages\NLog.4.2.2\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -48,14 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ClassType.cs" />
+    <Compile Include="Enums\Zodiac.cs" />
     <Compile Include="Generics\LockedList.cs" />
     <Compile Include="Generics\ObjectsPool.cs" />
+    <Compile Include="Models\Account\AccountData.cs" />
+    <Compile Include="Models\Character\CharacterData.cs" />
     <Compile Include="Networking\Cryptography\BdoTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\SingleThreadActor.cs" />
+    <Compile Include="UID\UInt32UidFactory.cs" />
     <Compile Include="Utils\BinaryExt.cs" />
     <Compile Include="Utils\ExtDatetime.cs" />
     <Compile Include="Utils\NetworkExt.cs" />
+    <Compile Include="Utils\RndExt.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

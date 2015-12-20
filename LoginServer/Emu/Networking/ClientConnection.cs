@@ -15,7 +15,7 @@ namespace LoginServer.Emu.Networking
 
         public BdoTransformer Session { get; private set; }
 
-        public int SequenceId = 52947;
+        public int SequenceId = 37612;
 
         public ClientConnection()
         {
@@ -31,6 +31,11 @@ namespace LoginServer.Emu.Networking
         private void SendEnd(IAsyncResult ar)
         {
             Socket.EndSend(ar);
+        }
+
+        public void CloseConnection()
+        {
+            Socket.Close();
         }
     }
 }

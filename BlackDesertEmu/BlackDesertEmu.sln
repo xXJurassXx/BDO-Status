@@ -9,6 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginServer", "..\LoginServ
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldServer", "..\WorldServer\WorldServer.csproj", "{5A518927-C7B2-4324-AD19-D192B7C7B801}"
+	ProjectSection(ProjectDependencies) = postProject
+		{859B234C-B42B-4917-BD3D-6048FD496B00} = {859B234C-B42B-4917-BD3D-6048FD496B00}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "..\Commons\Commons.csproj", "{859B234C-B42B-4917-BD3D-6048FD496B00}"
 EndProject

@@ -148,6 +148,17 @@ namespace Commons.Utils
 
             return result;
         }
+        public static byte[] WriteFixedString(string str, Encoding encoding, int fixedSize)
+        {
+            var src = encoding.GetBytes(str);
+            if (src.Length > fixedSize)
+                throw new Exception("Can't put fixed string cause string byte size are bigger than requested fixed size");
+
+            var arr = new byte[fixedSize];
+            Buffer.BlockCopy(src, 0, arr, 0, src.Length);
+
+            return arr;
+        }
 
         public static string ToHex(this byte[] array)
         {

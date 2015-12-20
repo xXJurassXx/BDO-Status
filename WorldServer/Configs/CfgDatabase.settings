@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WorldServer.Configs" GeneratedClassName="CfgDatabase">
+  <Profiles />
+  <Settings>
+    <Setting Name="LoginServerDaoHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="LoginServerDaoUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">root</Value>
+    </Setting>
+    <Setting Name="LoginServerDaoPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LoginServerDaoDatabase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">bd_login</Value>
+    </Setting>
+    <Setting Name="GameServerDaoHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="GameServerDaoUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">root</Value>
+    </Setting>
+    <Setting Name="GameServerDaoPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="GameServerDaoDatabase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">bd_world</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using Commons.Utils;
 using LoginServer.Emu.Networking.Handling.Frames.Recv;
+using LoginServer.Emu.Networking.Handling.Frames.Send;
 
 namespace LoginServer.Emu.Networking.Handling
 {
@@ -16,7 +17,16 @@ namespace LoginServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-            ClientFrames.TryAdd(0x0c75, typeof (RpGetToken));
+            ClientFrames.TryAdd(0x0c75, typeof(RpGetToken));
+            ClientFrames.TryAdd(0x0c77, typeof(RpUnk));
+            ClientFrames.TryAdd(0x0c7A, typeof(RpUnk2));
+
+            ServerFrames.TryAdd(typeof(SpSetHash), 0x0c76);
+            ServerFrames.TryAdd(typeof(SpUnk), 0xc78);
+            ServerFrames.TryAdd(typeof(SpUnk2), 0xc98);
+            ServerFrames.TryAdd(typeof(SpUnk3), 0x0c7b);
+            ServerFrames.TryAdd(typeof(SpUnk4), 0x0c74);
+            ServerFrames.TryAdd(typeof(SpServerlist), 0x0c7d);
         }
 
         /// <summary>
