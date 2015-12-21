@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.IO;
 using System.Text;
+using NLog.Fluent;
+
 /*
    Author:Sagara
 */
@@ -224,6 +226,31 @@ namespace Commons.Utils
             }
 
             return builder.ToString();
+        }
+
+        public static string ReadS(this BinaryReader br, int padding = 0)
+        {
+            var encoding = Encoding.Unicode;
+            var result = "";
+            try
+            {
+                short ch;
+                while ((ch = br.ReadInt16()) != 0)
+                    result += encoding.GetString(BitConverter.GetBytes(ch));
+
+                if (padding > 0)
+                {
+                    for (int x = (result.Length * 2); x < padding; x++)
+                    {
+                        br.ReadByte();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Log.Warn("Missing Sp");
+            }
+            return result;
         }
     }
 }
