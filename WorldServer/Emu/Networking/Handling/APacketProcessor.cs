@@ -12,7 +12,7 @@ namespace WorldServer.Emu.Networking.Handling
     {
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public void Send(ClientConnection client, bool isCrypted = true)
+        public void Send(ClientConnection client, bool isCrypted = true, short opcode = 0)
         {
             var body = WritedData(); //get body data from sended packet
 
@@ -24,7 +24,7 @@ namespace WorldServer.Emu.Networking.Handling
             if (isCrypted) //if need crypt, set val
                 packet[2] = 1;
 
-            var opCode = PacketHandler.GetOpCode(GetType()); //get opcode from handler
+            var opCode = opcode != 0 ? opcode : PacketHandler.GetOpCode(GetType());
 
             Buffer.BlockCopy(BitConverter.GetBytes(opCode), 0, packet, 5, 2); //copy opcode in buffer
             Buffer.BlockCopy(body, 0, packet, 7, body.Length); //copy packet body in buffer

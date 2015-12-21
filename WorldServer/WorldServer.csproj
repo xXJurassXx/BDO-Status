@@ -86,11 +86,14 @@
     <Compile Include="Emu\Networking\Handling\APacketProcessor.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpCreateCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpDeleteCharacter.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldRequest.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpGetToken.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterList.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacterError.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpDeleteCharacter.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpEnterOnWorldResponse.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpRaw.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk.cs" />
     <Compile Include="Emu\Networking\Handling\PacketHandler.cs" />
     <Compile Include="Emu\Networking\NetworkService.cs" />

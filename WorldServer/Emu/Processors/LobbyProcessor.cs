@@ -65,7 +65,6 @@ namespace WorldServer.Emu.Processors
 
             _characterUidsFactory = usedIds.Any() //Configure id factory
                 ? new UInt32UidFactory((uint) usedIds[usedIds.Count - 1]) : new UInt32UidFactory();
-
         }
 
         public void GetCharacterList(ClientConnection connection)
@@ -134,6 +133,7 @@ namespace WorldServer.Emu.Processors
 
                         db.Delete(connection.Characters.First(s => s.CharacterId == characterId));
 
+                        //TODO - Delayed removed task
                         new SpDeleteCharacter(characterId, 1, deletionTime).Send(connection);
 
                         transaction.Commit();
@@ -144,6 +144,11 @@ namespace WorldServer.Emu.Processors
                     }
                 }
             }
+        }
+
+        public void PrepareForEnterOnWorld(ClientConnection connection, long characterId)
+        {
+            new SpEnterOnWorldResponse().Send(connection);
         }
 
         public object OnUnload()

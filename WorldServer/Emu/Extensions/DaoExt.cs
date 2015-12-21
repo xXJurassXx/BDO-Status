@@ -36,6 +36,5 @@ namespace WorldServer.Emu.Extensions
         {
             return !type.IsGenericType && typeof (T).IsAssignableFrom(type);
         }
-
     }
 }

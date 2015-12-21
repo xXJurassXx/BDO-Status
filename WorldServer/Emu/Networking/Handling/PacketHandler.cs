@@ -19,12 +19,14 @@ namespace WorldServer.Emu.Networking.Handling
             ClientFrames.TryAdd(0x0c94, typeof(RpGetToken));
             ClientFrames.TryAdd(0x0be0, typeof(RpCreateCharacter));
             ClientFrames.TryAdd(0x0be3, typeof(RpDeleteCharacter));
+            ClientFrames.TryAdd(0x0CDB, typeof(RpEnterOnWorldRequest));
 
             ServerFrames.TryAdd(typeof(SpUnk), 0x0c98);
             ServerFrames.TryAdd(typeof(SpCharacterList), 0x0c95);
             ServerFrames.TryAdd(typeof(SpCreateCharacter), 0x0be1);
-            ServerFrames.TryAdd(typeof(SpCreateCharacterError), 0x0be2);
+            ServerFrames.TryAdd(typeof(SpCreateCharacterError), 0x0be2); 
             ServerFrames.TryAdd(typeof(SpDeleteCharacter), 0x0be4);
+            ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0x0CEC);
         }
 
         /// <summary>
