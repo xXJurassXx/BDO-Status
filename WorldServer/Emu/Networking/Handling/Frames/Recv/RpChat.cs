@@ -25,7 +25,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 
                     // Get string
                     var message = Encoding.ASCII.GetString(data.Skip(4).ToArray()).Replace("\0", "");
-                    new SpChat(message, 0, client.Account.FamilyName, chatType).Send(client); // TODO: KARYZIR: replace 0 with actual session id
+                    new SpChat(message, 0, client.ActivePlayer.CharacterName, chatType).Send(client); // TODO: KARYZIR: replace 0 with actual session id
                     //Log.Debug("Chat type: {0}, Text: {1}", chatType, message);
                 }
             }
