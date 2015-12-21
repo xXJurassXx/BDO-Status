@@ -10,13 +10,15 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     class SpChat : APacketProcessor
     {
+        private readonly int _sessionId;
         private readonly string _text;
         private readonly string _accountName;
         private readonly ChatType _chatType;
 
-        public SpChat(string text, string accountName, ChatType chatType)
+        public SpChat(string text, int sessionId, string accountName, ChatType chatType)
         {
             _text = text;
+            _sessionId = sessionId;
             _accountName = accountName;
             _chatType = chatType;
         }
@@ -27,26 +29,16 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
                 using (var writer = new BinaryWriter(stream))
                 {
                     writer.Write((byte)_chatType.GetHashCode());
-                    var data = new byte[]
-                    {
-                        0x0D, 0x05, 0xDC, 0xFB
-                    };
-                    writer.Write(data);
-                    writer.Write((byte)0x00); // Spacer for char name
-
-                    // Character name
+                    writer.Write("0D05DCFB".ToBytes()); // TODO
+                    writer.Write((byte)0x00);
                     writer.Write(BinaryExt.WriteFixedString(_accountName, Encoding.Unicode, 62));
 
                     // Unknown data
-                    var unk = new byte[] { 0x00, 0x01, 0x00, 0x18, 0x00 };
-                    writer.Write(unk);
+                    writer.Write("0001001800".ToBytes());
 
-                    // Write string
+                    // Chat text
                     writer.WriteS(_text);
-
-                    // Say that we have ended sending this packet
-                    writer.Write((byte)0x00);
-                    writer.Write((byte)0x00);
+                    writer.Write("0000".ToBytes());
                 }
                 return stream.ToArray();
             }
