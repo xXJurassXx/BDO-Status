@@ -90,6 +90,7 @@
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldRequest.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpGetToken.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpHeartbeat.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpRequestDisconnect.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustimozationData.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustomizationResponse.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterInformation.cs" />

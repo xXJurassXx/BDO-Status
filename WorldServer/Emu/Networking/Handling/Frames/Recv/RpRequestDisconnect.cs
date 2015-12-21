@@ -10,7 +10,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
     {
         public override void Process(ClientConnection client, byte[] data)
         {
-            var sendToTray = BitConverter.ToChar(data, 0);
+            //var sendToTray = BitConverter.ToChar(data, 0);
 
             // Disconnect client immediately.
             client.CloseConnection();
