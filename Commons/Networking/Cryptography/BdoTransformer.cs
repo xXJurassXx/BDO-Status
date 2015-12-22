@@ -42,6 +42,11 @@ namespace Commons.Networking.Cryptography
             0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
             0x0, 0x0
         };
+        public BdoTransformer(byte[] key, short opCode) 
+            : this(BitConverter.GetBytes(opCode).Concat(key).ToArray())
+        {
+            
+        }
 
         public BdoTransformer()
             : this(new byte[] { 0xeb, 0x03 }.Concat(TempKey).ToArray())
