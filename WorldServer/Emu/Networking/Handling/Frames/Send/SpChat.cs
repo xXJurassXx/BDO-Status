@@ -2,22 +2,21 @@
 using System.Text;
 using Commons.Enums;
 using Commons.Utils;
-
 /**
-* Author: InCube
+* Author: InCube, Sagara
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     class SpChat : APacketProcessor
     {
         private readonly int _sessionId;
-        private readonly string _text;
+        private readonly string _message;
         private readonly string _accountName;
         private readonly ChatType _chatType;
 
-        public SpChat(string text, int sessionId, string accountName, ChatType chatType)
+        public SpChat(string message, int sessionId, string accountName, ChatType chatType)
         {
-            _text = text;
+            _message = message;
             _sessionId = sessionId;
             _accountName = accountName;
             _chatType = chatType;
@@ -28,17 +27,13 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             {
                 using (var writer = new BinaryWriter(stream))
                 {
-                    writer.Write((byte)_chatType.GetHashCode());
-                    writer.Write("0D05DCFB".ToBytes()); // TODO
-                    writer.Write((byte)0x00);
+                    writer.WriteH(_chatType.GetHashCode());
+                    writer.WriteD(_sessionId);
                     writer.Write(BinaryExt.WriteFixedString(_accountName, Encoding.Unicode, 62));
-
-                    // Unknown data
-                    writer.Write("0001001800".ToBytes());
-
-                    // Chat text
-                    writer.WriteS(_text);
-                    writer.Write("0000".ToBytes());
+                    writer.WriteH(1);
+                    writer.WriteH(0);
+                    writer.Write(Encoding.Unicode.GetBytes(_message));
+                    writer.WriteH(0);
                 }
                 return stream.ToArray();
             }
