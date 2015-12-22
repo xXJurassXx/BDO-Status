@@ -20,20 +20,15 @@ namespace WorldServer.Emu.Networking.Handling
             ClientFrames.TryAdd(0x0c94, typeof(RpGetToken));
             ClientFrames.TryAdd(0x0be0, typeof(RpCreateCharacter));
             ClientFrames.TryAdd(0x0be3, typeof(RpDeleteCharacter));
-            ClientFrames.TryAdd(0x0cdb, typeof(RpEnterOnWorldRequest));
-            ClientFrames.TryAdd(0x10b0, typeof(RpEnterOnWorldProcess));
+            ClientFrames.TryAdd(0x0CDB, typeof(RpEnterOnWorldRequest));
 
             ServerFrames.TryAdd(typeof(SpUnk), 0x0c98);
             ServerFrames.TryAdd(typeof(SpUnk2), 0x0c74);
             ServerFrames.TryAdd(typeof(SpCharacterList), 0x0c95);
             ServerFrames.TryAdd(typeof(SpCreateCharacter), 0x0be1);
             ServerFrames.TryAdd(typeof(SpCreateCharacterError), 0x0be2); 
-            ServerFrames.TryAdd(typeof(SpDeleteCharacter), 0x0be4); 
-            ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcec);
-            ServerFrames.TryAdd(typeof(SpSpawnCharacter), 0x0cdc);
-            ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);
-            ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x1085);
-            ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
+            ServerFrames.TryAdd(typeof(SpDeleteCharacter), 0x0be4);
+            ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0x0CEC);
         }
 
         /// <summary>
