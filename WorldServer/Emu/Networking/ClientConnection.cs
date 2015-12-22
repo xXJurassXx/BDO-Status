@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using Commons.Models.Account;
 using Commons.Models.Character;
 using Commons.Networking.Cryptography;
+using WorldServer.Emu.Models.Creature.Player;
 /*
    Author:Sagara
 */
@@ -23,7 +24,7 @@ namespace WorldServer.Emu.Networking
         
         public List<CharacterData> Characters { get; set; }  
 
-        public CharacterData ActivePlayer { get; set; }
+        public Player ActivePlayer { get; set; }
 
         public ClientConnection()
         {

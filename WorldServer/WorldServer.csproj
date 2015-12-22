@@ -80,23 +80,22 @@
     <Compile Include="Emu\Extensions\DaoExt.cs" />
     <Compile Include="Emu\Extensions\EnumExt.cs" />
     <Compile Include="Emu\Interfaces\IProcessor.cs" />
+    <Compile Include="Emu\Models\ABdoObject.cs" />
+    <Compile Include="Emu\Models\Creature\Player\Player.cs" />
     <Compile Include="Emu\Models\MySql\Mapping\WorldMap\CharacterMap.cs" />
     <Compile Include="Emu\Models\MySql\Mapping\LoginMap\UserMap.cs" />
     <Compile Include="Emu\Networking\ClientConnection.cs" />
     <Compile Include="Emu\Networking\Handling\APacketProcessor.cs" />
-    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpChat.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpCreateCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpDeleteCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldProcess.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldRequest.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpGetToken.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpHeartbeat.cs" />
-    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpRequestDisconnect.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustimozationData.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustomizationResponse.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterInformation.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterList.cs" />
-    <Compile Include="Emu\Networking\Handling\Frames\Send\SpChat.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacterError.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpDeleteCharacter.cs" />
@@ -125,9 +124,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Emu\Models\Creature\Player\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

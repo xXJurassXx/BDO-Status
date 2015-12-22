@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
-using Commons.Models.Character;
 using Commons.Utils;
+using WorldServer.Emu.Models.Creature.Player;
 /*
    Author:Sagara
 */
@@ -9,8 +9,8 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     class SpCharacterCustimozationData : APacketProcessor
     {
-        private readonly CharacterData _character;
-        public SpCharacterCustimozationData(CharacterData character)
+        private readonly Player _character;
+        public SpCharacterCustimozationData(Player character)
         {
             _character = character;
         }
@@ -20,12 +20,11 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write("04A4C200".ToBytes()); //todo game sessions
-                writer.Write("46B2C16FF2862300".ToBytes()); //46B2C16FF2862300
-                //writer.WriteQ(_character.CharacterId);
+                writer.Write(_character.GameSessionId); 
+                writer.Write(_character.Uid); //46B2C16FF2862300
                 writer.WriteD(1);
-                writer.Write(_character.AppearanceOptions);
-                writer.Write(BinaryExt.WriteFixedString(_character.Surname, Encoding.Unicode, 62));
+                writer.Write(_character.DatabaseCharacterData.AppearanceOptions);
+                writer.Write(BinaryExt.WriteFixedString(_character.DatabaseCharacterData.Surname, Encoding.Unicode, 62));
 
                 return stream.ToArray();
             }

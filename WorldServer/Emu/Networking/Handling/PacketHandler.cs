@@ -14,6 +14,9 @@ namespace WorldServer.Emu.Networking.Handling
         private static readonly ConcurrentDictionary<short, Type> ClientFrames = new ConcurrentDictionary<short, Type>();
         private static readonly ConcurrentDictionary<Type, short> ServerFrames = new ConcurrentDictionary<Type, short>();
 
+        public static event RecvPacketCallback RecvEvent;
+        private static readonly object RLock = new object();
+
         static PacketHandler()
         {
             ClientFrames.TryAdd(0x03e9, typeof(RpHeartbeat));
@@ -22,8 +25,6 @@ namespace WorldServer.Emu.Networking.Handling
             ClientFrames.TryAdd(0x0be3, typeof(RpDeleteCharacter));
             ClientFrames.TryAdd(0x0cdb, typeof(RpEnterOnWorldRequest));
             ClientFrames.TryAdd(0x10b0, typeof(RpEnterOnWorldProcess));
-            ClientFrames.TryAdd(0x0bdb, typeof(RpRequestDisconnect));
-            ClientFrames.TryAdd(0x0e87, typeof(RpChat));
 
             ServerFrames.TryAdd(typeof(SpUnk), 0x0c98);
             ServerFrames.TryAdd(typeof(SpUnk2), 0x0c74);
@@ -36,7 +37,6 @@ namespace WorldServer.Emu.Networking.Handling
             ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);
             ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x1085);
             ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
-            ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);
         }
 
         /// <summary>
@@ -59,6 +59,9 @@ namespace WorldServer.Emu.Networking.Handling
 
                 client.SequenceId = sequence; //install sequence id
 
+                lock(RLock)
+                    RecvEvent?.Invoke(opCode, body, isCrypt);
+
                 if (ClientFrames.ContainsKey(opCode)) //check, if packet exist
                     ((APacketProcessor)Activator.CreateInstance(ClientFrames[opCode])).Process(client, body);//process packet  
                 else
@@ -78,5 +81,7 @@ namespace WorldServer.Emu.Networking.Handling
 
             return ServerFrames[type];
         }
+
+        public delegate void RecvPacketCallback(short opCode, byte[] data, bool isCrypt = false);
     }
 }

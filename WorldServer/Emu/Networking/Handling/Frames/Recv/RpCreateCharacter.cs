@@ -24,7 +24,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
                     Log.Error("Profession with hashcode {0} are not exist", profession);
                     return;
                 }
-
+                
                 var unk = reader.ReadByte();
                 var name = reader.ReadString(62).Replace("\0", "");
                 var zodiac = (Zodiac)reader.ReadByte();
