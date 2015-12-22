@@ -195,7 +195,7 @@ namespace WorldServer.Emu.Networking
             }
             finally
             {
-                connection.Socket.Close();
+                connection.CloseConnection();
                 _connectionsPool.Release(connection);
 
                 Debug.Print("Client disconnected.");

@@ -1,4 +1,5 @@
-﻿using Commons.Models.Character;
+﻿using System.Threading;
+using Commons.Models.Character;
 using WorldServer.Emu.Networking;
 
 namespace WorldServer.Emu.Models.Creature.Player
@@ -6,6 +7,8 @@ namespace WorldServer.Emu.Models.Creature.Player
     public class Player : ABdoObject
     {
         public event PlayerActionCallback PlayerActions;
+
+        public CancellationTokenSource CancelTokenSource;
 
         public int GameSessionId;
 
@@ -24,11 +27,14 @@ namespace WorldServer.Emu.Models.Creature.Player
         {
             Release(); //release factories
             Action(PlayerAction.Logout); //handle logout action for processors
+            CancelTokenSource = null;
+            Connection = null;
+            DatabaseCharacterData = null;
         }
 
-        public void Action(PlayerAction action)
+        public void Action(PlayerAction action, params object[] parameters)
         {
-            PlayerActions?.Invoke(action);
+            PlayerActions?.Invoke(action, parameters);
             if(PlayerActions == null)
                 Log.Error($"Cannot invoke player action:{action}");
         }
@@ -39,6 +45,6 @@ namespace WorldServer.Emu.Models.Creature.Player
             Logout
         }
 
-        public delegate void PlayerActionCallback(PlayerAction action);
+        public delegate void PlayerActionCallback(PlayerAction action, params object[] parameters);
     }
 }

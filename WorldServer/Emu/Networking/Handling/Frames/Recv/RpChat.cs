@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Commons.Enums;
-using WorldServer.Emu.Networking.Handling.Frames.Send;
+using WorldServer.Emu.Models.Creature.Player;
 /**
-* Author: InCube
+* Author: InCube, Sagara
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
@@ -24,9 +24,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 
                     var message = Encoding.ASCII.GetString(data.Skip(4).ToArray()).Replace("\0", "");
 
-                    new SpChat(message, client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, chatType).Send(client);
-
-                    //Log.Debug("Chat type: {0}, Text: {1}", chatType, message);
+                    client.ActivePlayer.Action(Player.PlayerAction.Chat, chatType, message);
                 }
             }
         }

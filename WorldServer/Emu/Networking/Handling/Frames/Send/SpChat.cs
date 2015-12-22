@@ -11,14 +11,14 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
     {
         private readonly int _sessionId;
         private readonly string _message;
-        private readonly string _accountName;
+        private readonly string _characterName;
         private readonly ChatType _chatType;
 
-        public SpChat(string message, int sessionId, string accountName, ChatType chatType)
+        public SpChat(string message, int sessionId, string characterName, ChatType chatType)
         {
             _message = message;
             _sessionId = sessionId;
-            _accountName = accountName;
+            _characterName = characterName;
             _chatType = chatType;
         }
         public override byte[] WritedData()
@@ -29,7 +29,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
                 {
                     writer.WriteH(_chatType.GetHashCode());
                     writer.WriteD(_sessionId);
-                    writer.Write(BinaryExt.WriteFixedString(_accountName, Encoding.Unicode, 62));
+                    writer.Write(BinaryExt.WriteFixedString(_characterName, Encoding.Unicode, 62));
                     writer.WriteH(1);
                     writer.WriteH(0);
                     writer.Write(Encoding.Unicode.GetBytes(_message));

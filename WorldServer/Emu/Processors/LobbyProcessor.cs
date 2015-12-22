@@ -189,14 +189,17 @@ namespace WorldServer.Emu.Processors
             };
 
             connection.ActivePlayer = player;
-            connection.ActivePlayer.PlayerActions += action =>
+            connection.ActivePlayer.PlayerActions += (action, parameters) =>
             {
                 switch (action)
                 {
                     case Player.PlayerAction.Logout:
                         if (connection.ActivePlayer != null)
-                            UpdateCharacter(connection);                        
-                        break;
+                        {
+                            UpdateCharacter(connection);
+                            _gameSessionFactory.ReleaseUniqueInt((uint) connection.ActivePlayer.GameSessionId);
+                        }
+                        break;                       
                 }
             };
 
@@ -355,9 +358,7 @@ namespace WorldServer.Emu.Processors
             new SpRaw("0B0006000201", 0x0c7e).SendRaw(connection);
             #endregion
 
-
             new SpCharacterCustimozationData(connection.ActivePlayer).Send(connection);
-
 
             Core.Act(s => s.CharacterProcessor.EndLoad(connection));
         }
