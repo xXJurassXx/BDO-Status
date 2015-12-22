@@ -23,6 +23,8 @@ namespace WorldServer.Emu.Networking
         
         public List<CharacterData> Characters { get; set; }  
 
+        public CharacterData ActivePlayer { get; set; }
+
         public ClientConnection()
         {
             WaitPacketLen = new byte[2];

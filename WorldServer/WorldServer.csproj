@@ -86,15 +86,20 @@
     <Compile Include="Emu\Networking\Handling\APacketProcessor.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpCreateCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpDeleteCharacter.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldProcess.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldRequest.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpGetToken.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpHeartbeat.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustimozationData.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustomizationResponse.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterInformation.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterList.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacterError.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpDeleteCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpEnterOnWorldResponse.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpRaw.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpSpawnCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk2.cs" />
     <Compile Include="Emu\Networking\Handling\PacketHandler.cs" />
@@ -117,7 +122,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Emu\Models\Creature\Player\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
