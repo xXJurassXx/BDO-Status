@@ -22,6 +22,8 @@ namespace WorldServer.Emu.Networking.Handling
             ClientFrames.TryAdd(0x0be3, typeof(RpDeleteCharacter));
             ClientFrames.TryAdd(0x0cdb, typeof(RpEnterOnWorldRequest));
             ClientFrames.TryAdd(0x10b0, typeof(RpEnterOnWorldProcess));
+            ClientFrames.TryAdd(0x0bdb, typeof(RpRequestDisconnect));
+            ClientFrames.TryAdd(0x0e87, typeof(RpChat));
 
             ServerFrames.TryAdd(typeof(SpUnk), 0x0c98);
             ServerFrames.TryAdd(typeof(SpUnk2), 0x0c74);
@@ -34,6 +36,7 @@ namespace WorldServer.Emu.Networking.Handling
             ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);
             ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x1085);
             ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
+            ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);
         }
 
         /// <summary>
