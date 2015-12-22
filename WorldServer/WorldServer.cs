@@ -68,6 +68,7 @@ namespace WorldServer
                 s.ReloadProcessors();
                 s.AuthProcessor.OnLoad(null);
                 s.LobbyProcessor.OnLoad(null);
+                s.CharacterProcessor.OnLoad(null);
             });
 
             NetworkService.Initialize();
@@ -79,6 +80,7 @@ namespace WorldServer
             {
                 s.AuthProcessor.OnUnload();
                 s.LobbyProcessor.OnUnload();
+                s.CharacterProcessor.OnUnload();
             });
         }
 

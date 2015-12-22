@@ -26,12 +26,15 @@ namespace WorldServer.Emu
             public AuthProcessor AuthProcessor { get; private set; }
             public LobbyProcessor LobbyProcessor { get; private set; }
 
+            public CharacterProcessor CharacterProcessor { get; private set; }
+
             public void ReloadProcessors()
             {
                 lock (ProcessorsLock)
                 {
                     AuthProcessor = Reload(AuthProcessor);
                     LobbyProcessor = Reload(LobbyProcessor);
+                    CharacterProcessor = Reload(CharacterProcessor);
                 }
             }
 

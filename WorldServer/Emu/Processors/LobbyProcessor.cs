@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Commons.Models.Character;
 using Commons.UID;
 using Commons.Utils;
@@ -17,7 +16,6 @@ using WorldServer.Emu.Interfaces;
 using WorldServer.Emu.Models.Creature.Player;
 using WorldServer.Emu.Models.MySql.Mapping.WorldMap;
 using WorldServer.Emu.Networking;
-using WorldServer.Emu.Networking.Handling;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
 /*
    Author:Sagara
@@ -75,20 +73,6 @@ namespace WorldServer.Emu.Processors
                 ? new UInt32UidFactory((uint) usedIds[usedIds.Count - 1]) : new UInt32UidFactory();
 
             _gameSessionFactory = new UInt32UidFactory();
-
-            /*Example for InCube*/
-            PacketHandler.RecvEvent += (code, data, crypt) =>
-            {
-                switch (code)
-                {
-                    case 3719: //Rp chat
-                        int unk = BitConverter.ToInt32(data, 0);
-                        string recvMessage = Encoding.ASCII.GetString(data.Skip(4).ToArray()).Replace("\0","");
-                        Log.Debug(recvMessage);
-
-                        break;     
-                }
-            };
         }
 
         public void GetCharacterList(ClientConnection connection)
@@ -176,13 +160,45 @@ namespace WorldServer.Emu.Processors
             }
         }
 
+        public void UpdateCharacter(ClientConnection connection)
+        {
+            using (var db = _gsDbFactory.OpenSession())
+            {
+                using (var transaction = db.BeginTransaction())
+                {
+                    try
+                    {
+                        db.Update(connection.ActivePlayer.DatabaseCharacterData);
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"Cannot update player id:{connection.ActivePlayer.DatabaseCharacterData.CharacterId} exception:\n{ex}");
+
+                        transaction.Rollback();
+                    }
+                }
+            }
+        }
+
         public void PrepareForEnterOnWorld(ClientConnection connection, long characterId)
         {
-            var player = new Player(connection.Characters.First(s => s.CharacterId == characterId))
+            var player = new Player(connection, connection.Characters.First(s => s.CharacterId == characterId))
             {
                 GameSessionId = (int) _gameSessionFactory.Next()
             };
+
             connection.ActivePlayer = player;
+            connection.ActivePlayer.PlayerActions += action =>
+            {
+                switch (action)
+                {
+                    case Player.PlayerAction.Logout:
+                        if (connection.ActivePlayer != null)
+                            UpdateCharacter(connection);                        
+                        break;
+                }
+            };
 
             var sessionId = BitConverter.GetBytes(connection.ActivePlayer.GameSessionId).ToHex();
             var uid = BitConverter.GetBytes(connection.ActivePlayer.Uid).ToHex();
@@ -341,6 +357,9 @@ namespace WorldServer.Emu.Processors
 
 
             new SpCharacterCustimozationData(connection.ActivePlayer).Send(connection);
+
+
+            Core.Act(s => s.CharacterProcessor.EndLoad(connection));
         }
 
         public object OnUnload()

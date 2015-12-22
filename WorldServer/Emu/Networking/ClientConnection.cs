@@ -44,6 +44,12 @@ namespace WorldServer.Emu.Networking
 
         public void CloseConnection()
         {
+            if (ActivePlayer != null)
+            {
+                ActivePlayer.Dispose();
+                ActivePlayer = null;
+            }
+
             Socket.Close();
         }
     }
