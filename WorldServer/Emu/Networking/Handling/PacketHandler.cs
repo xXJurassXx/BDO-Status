@@ -40,6 +40,7 @@ namespace WorldServer.Emu.Networking.Handling
             ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x1085);
             ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
             ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);
+            ServerFrames.TryAdd(typeof(SpInventory), 0x0bf1);
         }
 
         /// <summary>

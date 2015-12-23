@@ -14,7 +14,6 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
         {
             _character = character;
         }
-
         public override byte[] WritedData()
         {
             using (var stream = new MemoryStream())

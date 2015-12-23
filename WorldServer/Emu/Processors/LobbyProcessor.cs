@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Commons.Enums;
 using Commons.Models.Character;
 using Commons.UID;
 using Commons.Utils;
@@ -15,6 +16,8 @@ using WorldServer.Emu.Extensions;
 using WorldServer.Emu.Interfaces;
 using WorldServer.Emu.Models.Creature.Player;
 using WorldServer.Emu.Models.MySql.Mapping.WorldMap;
+using WorldServer.Emu.Models.Storages;
+using WorldServer.Emu.Models.Storages.Abstracts;
 using WorldServer.Emu.Networking;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
 /*
@@ -37,12 +40,17 @@ namespace WorldServer.Emu.Processors
         /// <summary>
         /// Character uids generator
         /// </summary>
-        private static UInt32UidFactory _characterUidsFactory;
+        private static Int32UidFactory _characterUidsFactory;
+
+        /// <summary>
+        /// Items uids generator
+        /// </summary>
+        private static Int32UidFactory _itemsUidsFactory;
 
         /// <summary>
         /// Game session uid`s generator
         /// </summary>
-        private static UInt32UidFactory _gameSessionFactory;
+        private static Int32UidFactory _gameSessionFactory;
 
         /// <summary>
         /// Initilize service action
@@ -57,7 +65,7 @@ namespace WorldServer.Emu.Processors
                     $";Password={CfgDatabase.Default.GameServerDaoPassword};" +
                     "CharSet=utf8"))).Mappings(m =>
                     {
-                        m.FluentMappings.AddFromNamespaceOf<CharacterMap>();
+                        m.FluentMappings.AddFromNamespaceOf<CharacterMap>().AddFromNamespaceOf<StorageMap>();
                     });
             
             var export = new SchemaUpdate(config.BuildConfiguration());
@@ -69,10 +77,25 @@ namespace WorldServer.Emu.Processors
             var usedIds =  //Get all used character id`s
                 _gsDbFactory.OpenSession().CreateSQLQuery("select `c_character_id` from `bd_characters`").List();
 
-            _characterUidsFactory = usedIds.Any() //Configure id factory
-                ? new UInt32UidFactory((uint) usedIds[usedIds.Count - 1]) : new UInt32UidFactory();
+            var usedItemUids = _gsDbFactory.OpenSession().CreateSQLQuery("select `i_item_uid` from `bd_items`").List();
 
-            _gameSessionFactory = new UInt32UidFactory();
+            if (usedIds.Any())
+            {
+                var cId = int.Parse(usedIds[usedIds.Count - 1].ToString());
+
+                _characterUidsFactory = new Int32UidFactory(cId);
+            }
+            else _characterUidsFactory = new Int32UidFactory();
+            
+            if (usedItemUids.Any())
+            {
+                var iUid = int.Parse(usedItemUids[usedItemUids.Count - 1].ToString());
+
+                _itemsUidsFactory = new Int32UidFactory(iUid);
+            }
+            else _itemsUidsFactory = new Int32UidFactory();
+
+            _gameSessionFactory = new Int32UidFactory();
         }
 
         public void GetCharacterList(ClientConnection connection)
@@ -80,10 +103,17 @@ namespace WorldServer.Emu.Processors
             using (var db = _gsDbFactory.OpenSession())
             {
                 var list = db.QueryOver<CharacterData>().Where(p => p.AccountId == connection.Account.Id).List();
+                
                 if(list != null)
                     connection.Characters = (List<CharacterData>) list;
                 else
                     connection.Characters = new List<CharacterData>();
+
+                foreach (var characterData in connection.Characters)
+                {
+                    var equipment = db.QueryOver<CharacterItem>().Where(i => i.CharacterId == characterData.CharacterId && i.StorageType == (int) StorageType.Equipment).List();  
+                    //TODO equipment on character list                  
+                }
 
                 new SpCharacterList(connection.Account, connection.Characters).Send(connection);
 
@@ -116,7 +146,19 @@ namespace WorldServer.Emu.Processors
                         characterData.Surname = connection.Account.FamilyName;
                         characterData.Level = 1;
                         characterData.CreationDate = DateTime.Now;
-
+                        characterData.CreatedId = 0;//for nhibernate driver
+                        var inventory = InventoryStorage.GetDefault(characterData.ClassType);
+                        foreach (var daoItem in inventory.Items.Select(item => new CharacterItem
+                        {
+                            CharacterId = characterData.CharacterId,
+                            ItemId = item.Value.ItemId,
+                            ItemUid = _itemsUidsFactory.Next(),
+                            Slot = item.Key - 1,
+                            Count = item.Value.Count,
+                            StorageType = (int) StorageType.Inventory
+                        }))                       
+                            db.Save(daoItem);
+                        
                         db.Save(characterData);
 
                         connection.Characters.Add(characterData);
@@ -144,17 +186,25 @@ namespace WorldServer.Emu.Processors
                     try
                     {
                         var deletionTime = (int)(DateTime.Now.UnixMilliseconds() / 1000);
+                        var deleted = connection.Characters.First(s => s.CharacterId == characterId);
 
-                        db.Delete(connection.Characters.First(s => s.CharacterId == characterId));
+                        var equipment = db.QueryOver<CharacterItem>().Where(i => i.CharacterId == deleted.CharacterId).List();
+                        for (int i = 0; i < equipment.Count; i++)
+                            db.Delete(equipment[i]);
+                        
+                        db.Delete(deleted);
 
                         //TODO - Delayed removed task
                         new SpDeleteCharacter(characterId, 1, deletionTime).Send(connection);
 
                         transaction.Commit();
                     }
-                    catch 
+                    catch(Exception ex)
                     {
                         transaction.Rollback();
+
+
+                        Log.Error(ex);
                     }
                 }
             }
@@ -168,7 +218,18 @@ namespace WorldServer.Emu.Processors
                 {
                     try
                     {
+                        foreach (var daoItem in connection.ActivePlayer.Inventory.Items.Select(item => new CharacterItem
+                        {
+                            CharacterId = connection.ActivePlayer.DatabaseCharacterData.CharacterId,
+                            ItemId = item.Value.ItemId,
+                            ItemUid = _itemsUidsFactory.Next(),
+                            Slot = item.Key - 1,
+                            Count = item.Value.Count,
+                            StorageType = (int)StorageType.Inventory
+                        })) db.Update(daoItem);
+
                         db.Update(connection.ActivePlayer.DatabaseCharacterData);
+
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -185,8 +246,17 @@ namespace WorldServer.Emu.Processors
         {
             var player = new Player(connection, connection.Characters.First(s => s.CharacterId == characterId))
             {
-                GameSessionId = (int) _gameSessionFactory.Next()
+                GameSessionId = _gameSessionFactory.Next()
             };
+
+            using (var db = _gsDbFactory.OpenSession())
+            {
+               var daoItems = db.QueryOver<CharacterItem>().Where(i => i.CharacterId == characterId).List();
+               var items = daoItems.ToDictionary<CharacterItem, short, AStorageItem>(data => (short) (data.Slot + 1), data => new InventoryItem(data.ItemId, data.Count));
+               var inventory = new InventoryStorage(items, 48);
+
+                player.Inventory = inventory;
+            }
 
             connection.ActivePlayer = player;
             connection.ActivePlayer.PlayerActions += (action, parameters) =>
@@ -197,7 +267,7 @@ namespace WorldServer.Emu.Processors
                         if (connection.ActivePlayer != null)
                         {
                             UpdateCharacter(connection);
-                            _gameSessionFactory.ReleaseUniqueInt((uint) connection.ActivePlayer.GameSessionId);
+                            _gameSessionFactory.ReleaseUniqueInt(connection.ActivePlayer.GameSessionId);
                         }
                         break;                       
                 }
@@ -217,15 +287,19 @@ namespace WorldServer.Emu.Processors
             new SpRaw("0108270001004905000100890600010088060001008A020001008A06000100170400010087060001007E02000100BE04000100DD000001001D040001002504000100230400010016040001008405000100860200010086050001008305000100B1020001008D020001008C020001004F05000100CF000001008F020001008E02000100CB000001008B0200010081020001008002000100900200010093020001007F020001005C00000100DC00000100DE0000010058000001007C010001002004000100180400", 0x0d0c).SendRaw(connection);
             new SpRaw("0000", 0x1112).SendRaw(connection);
             new SpRaw("12", 0x0c45).SendRaw(connection);
-            new SpRaw("0101" +
-                      sessionId + //game session 04A4C200
-                      "0000000000000000000000000400000001000000B80B000000000000FFFFFFFFFFFFFFFF0000000000000000000100FF7FFF7F3A38E56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000000000000002F60100001500000000000000FFFFFFFFFFFFFFFF0100000000000000000100FF7FFF7F0B35E56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000000000000003F70100001800000000000000FFFFFFFFFFFFFFFF0100000000000000000100FF7FFF7F1741E56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000000000000000000000000000000465AF00000100000000000000FFFFFFFFFFFFFFFF0100000000000000000100FF7FFF7F5F53E56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000000000000000000000000000", 0x0bf1).SendRaw(connection);
+
+            /*Inventory packet*/
+            new SpInventory(connection.ActivePlayer).Send(connection);
+
             new SpRaw("0101" +
                       sessionId + //game session
                       "0000000000000000000000000000", 0x0bf1).SendRaw(connection);
+
+            /*Equipment packet*/
             new SpRaw("01A12800000100000000000000FFFFFFFFFFFFFFFF000000000000000000010032003200A62CE56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000000000000000000000000000052900000100000000000000FFFFFFFFFFFFFFFF000000000000000000010031003200A72CE56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000000000000000000000000000000000000000000000000008DB3220170000000CA60000000000000CA600000000000010EEF906FFFFFFFFFFFFFFFF00000000000000000000000000000000000000003700000000000000FFFFFF7F17000000C0F4090A00000000180000001700000000000000170000000000000000000000080000000000000060A0F41C1700000030A400FFFFFFFFFFFFFFFF1DFD7F000030A4000000000000A01D7218170000000010000000000000B4DB32201700000018DC322017000000000000000000000000000000000000002083FD0A00000000B0DB322017000000A01D7218000000000000FFFFFFFFFFFFFFFFFD0A0000000004000000170000000010000017000000A009F41C170000001083FD0A000000000800000000000000000000000000000000000000000000007912BD16FD7F0000E09CF41C17000000B9DC32000000000000FFFFFFFFFFFFFFFF000000000000000400000000000000000000000000000080DC322017000000000000000000000000000000000000007A000000FD0000000010F41C1700000000DE3220170000003700000000000000FFFF0000FFFFFF7FFFFFFFFFFFFFFFFFF721AF590100000000000000170000007A000000000000007A0000000000000001000000000000000100000030750000E803000000000000D668ECAE88FB00000100000017000000E8DC322017000000E000001C170000FFFFFFFFFFFFFFFF00A009F41C1700000000DE322017000000905EEE051700000000000000000000007A000000000000007A000000000000008F96C9000000000073000000000000007A000000000000007A00000000000000000000000000FFFFFFFFFFFFFFFF000000DE322017000000905EEE05170000008098231D1700000000000000000000008098231D17000000E09CF41C1700000000000000000000000100000000000000E92BC90EFD7F0000905EEE05170000000000000000FFFFFFFFFFFFFFFF0000003E55C90EFD7F00007A00EE051700000003DE322017000000EBEF86B68DE9000000DE3220170000008098231D1700000000000000000000004000000000000000905EEE05170000000000000000000000C9DE3220FFFFFFFFFFFFFFFF000000006E52C90EFD7F0000905EEE0517000000380000000000000014BA141D1700000000000000000000000000CF1C1700000000000000000000000000000000000000035EEE05170000000000000000000000400000FFFFFFFFFFFFFFFF0000000000905EEE05170000000000000000000000B09EEE05170000000000000000000000000000000000000014BA141D1700000000000000000000009448CF1C170000005072421D1700000038000000000000000000FFFFFFFFFFFFFFFF00000000000040000000000000000000000000000000000000000000000001000000000000000F20D10EFD7F0000000000000000000000000047170000008098231D1700000002000002FD7F0000809823000000000090FFFFFFFFFFFFFFFF0700000000000050016902000000006A070000000000006A070000000000000000BE2D190000000FE2E51DFD7F0000104469020000000000006902000000006A07000000000000FF0300FCFD7F00006A07000000000000FFFFFFFFFFFFFFFF6A07000000000000D7D5E51DFD7F00000054C92D190000000000BE2D1900000000006902000000000054C71617000000FF030000000000006A07000000000000F0F3DE1617000000900700971700000001000000000000FFFFFFFFFFFFFFFF00000000000000000080706613180000006A070000000000007D23E51DFD7F00000000690200000000F0E032201700000000000000000000000054C92D19000000000D0000010000000000000000000000000000000000FFFFFFFFFFFFFFFF0000F81B000000000000C003000000000000000000000000000000000000F8000001" +
                        uid + //uid
                       "0054C92D1900000001E9000000000000000000000000000078000000010000000054C92D190000000067000000FFFFFFFFFFFFFFFF000000FF030000000000008D81E51DFD7F0000100E3F0200000000F80000000000000090000000000000003000000000000000FC00000000FFFFFF0000000000000000F80000F800000000000000000000000002000002FFFFFFFFFFFFFFFF0000000000006902000000006A07006D0000000080000000000000004274E51DFD7F000000003F020000000000000000FD7F00000000000000000000FCBB0047000000003000000000000000000000000000000020BBC9FFFFFFFFFFFFFFFF02000000000000000000000000893FE51DFD7F00000054C92D190000000054C92D190000006A07000000000000000069020000000000000002000000000000000000000000FEFFFFFFFFFFFFFF00000000000000000100FFFFFFFFFFFFFFFF045BF67F000001000000000000006A07000000000000C00300000000000010E5350201000000F80000000000000000000000FD7F000000006E81100000000100000017000000FF03000000000000F600000000000000FFFFFFFFFFFFFFFFFF00000000000000700600001700000018000000000000000000000000000000F80000F800000000000000000000000000000000000000000000000000000000F8E340960200000001000000020000000000000000000000FFFFFFFFFFFFFFFF1F00000002000000E000000000000000C0E34096020000001054C92D19000000F800000000000000F800000000000000F800000000000000F80000F80000000047549A1AFD7F0000000000000000000020000000000000FFFFFFFFFFFFFFFF000054C92D19000000FF0300000000000000006902000000001067000000000000E774E51DFD7F000098009596020000001F20010000000000000000001700000018000000000000000000000000000000000000000000FFFFFFFFFFFFFFFF000000000000000000000000000000000000D000959602000000010000000200000000000000000000000000000000000000980000000000000010EEF90600000000980095960200000000D46F54190000000085145BF6FFFFFFFFFFFFFFFF00000000D46F541900000075C0AD840300000000006902000000000000E21DFD7F000010000000000000000054C92D190000006F000000007F000000006902000000001054C92D19000000000000000000000002000000FFFFFFFFFFFFFFFF0000000098009596020000000000000000000000462C5D5BF67F000010E4322017000000030000000200000000000000F10B0000000000000000000075C0AD84030000000000000000000000000000000000000020BBC9FFFFFFFFFFFFFFFF020100000059E532201700000018E5322017000000948D236D00000000000000000000000098009596020000000000000000000000000000000000000018E53220170000006A96075BF67F000020BBC92D00000000F0E4FFFFFFFFFFFFFFFF00000000000010E0350201000000FEFFFFFFFFFFFFFF20BBC92D1900000020BBC92D190000006900165BF67F000018E53220170000000000C92D19000000F10B35020100000059E532201700000070C0AD000000000000FFFFFFFFFFFFFFFF0000000000000000E1F505F10B00000000000000000000000000000000000000000000000000000000000000000000000000000000000000C2000000000000000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFF10E0350201000000FEFFFFFFFFFFFFFF0000000000000000F721AF590000000010E0350201000000000000000000000000000000", 0x0d5a).SendRaw(connection);
+
             new SpRaw("00010000000000000000000000", 0x1064).SendRaw(connection);
             new SpRaw("01010000000000000000000000", 0x1064).SendRaw(connection);
             new SpRaw("02010000000000000000000000", 0x1064).SendRaw(connection);

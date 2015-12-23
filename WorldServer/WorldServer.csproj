@@ -82,6 +82,8 @@
       <DependentUpon>CfgNetwork.settings</DependentUpon>
     </Compile>
     <Compile Include="Emu\Core.cs" />
+    <Compile Include="Emu\Data\DataLoader.cs" />
+    <Compile Include="Emu\Data\Templates\ItemDataTemplate.cs" />
     <Compile Include="Emu\Extensions\DaoExt.cs" />
     <Compile Include="Emu\Extensions\EnumExt.cs" />
     <Compile Include="Emu\Interfaces\IProcessor.cs" />
@@ -89,6 +91,11 @@
     <Compile Include="Emu\Models\Creature\Player\Player.cs" />
     <Compile Include="Emu\Models\MySql\Mapping\WorldMap\CharacterMap.cs" />
     <Compile Include="Emu\Models\MySql\Mapping\LoginMap\UserMap.cs" />
+    <Compile Include="Emu\Models\MySql\Mapping\WorldMap\StorageMap.cs" />
+    <Compile Include="Emu\Models\Storages\Abstracts\AStorage.cs" />
+    <Compile Include="Emu\Models\Storages\Abstracts\AStorageItems.cs" />
+    <Compile Include="Emu\Models\Storages\InventoryItem.cs" />
+    <Compile Include="Emu\Models\Storages\InventoryStorage.cs" />
     <Compile Include="Emu\Networking\ClientConnection.cs" />
     <Compile Include="Emu\Networking\Handling\APacketProcessor.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpChat.cs" />
@@ -108,6 +115,7 @@
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCreateCharacterError.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpDeleteCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpEnterOnWorldResponse.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpInventory.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpRaw.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpSpawnCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk.cs" />

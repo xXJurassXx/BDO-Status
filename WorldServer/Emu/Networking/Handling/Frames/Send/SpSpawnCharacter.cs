@@ -3,7 +3,6 @@ using System.Text;
 using Commons.Utils;
 using WorldServer.Emu.Extensions;
 using WorldServer.Emu.Models.Creature.Player;
-
 /*
    Author:Sagara
 */

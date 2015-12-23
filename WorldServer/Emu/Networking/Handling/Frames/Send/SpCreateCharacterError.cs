@@ -1,5 +1,7 @@
 ﻿using System.IO;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     internal class SpCreateCharacterError : APacketProcessor

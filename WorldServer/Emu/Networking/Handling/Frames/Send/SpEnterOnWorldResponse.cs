@@ -1,4 +1,7 @@
-﻿namespace WorldServer.Emu.Networking.Handling.Frames.Send
+﻿/*
+   Author:Sagara
+*/
+namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     class SpEnterOnWorldResponse : APacketProcessor
     {

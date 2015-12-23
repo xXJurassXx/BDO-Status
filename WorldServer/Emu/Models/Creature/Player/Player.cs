@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Commons.Models.Character;
+using WorldServer.Emu.Models.Storages;
 using WorldServer.Emu.Networking;
 
 namespace WorldServer.Emu.Models.Creature.Player
@@ -15,6 +16,8 @@ namespace WorldServer.Emu.Models.Creature.Player
         public ClientConnection Connection;
                
         public CharacterData DatabaseCharacterData;
+
+        public InventoryStorage Inventory;
 
         public Player(ClientConnection connection, CharacterData characterData) : base(ObjectFamily.Player)
         {

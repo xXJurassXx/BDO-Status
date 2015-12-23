@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using Commons.Models.Character;
 using Commons.Utils;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     class SpCharacterCustomizationResponse : APacketProcessor

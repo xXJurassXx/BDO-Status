@@ -46,14 +46,18 @@
   <ItemGroup>
     <Compile Include="Enums\ChatType.cs" />
     <Compile Include="Enums\ClassType.cs" />
+    <Compile Include="Enums\EquipType.cs" />
+    <Compile Include="Enums\StorageType.cs" />
     <Compile Include="Enums\Zodiac.cs" />
     <Compile Include="Generics\LockedList.cs" />
     <Compile Include="Generics\ObjectsPool.cs" />
     <Compile Include="Models\Account\AccountData.cs" />
     <Compile Include="Models\Character\CharacterData.cs" />
+    <Compile Include="Models\Character\CharacterItem.cs" />
     <Compile Include="Networking\Cryptography\BdoTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\SingleThreadActor.cs" />
+    <Compile Include="UID\Int32UidFactory.cs" />
     <Compile Include="UID\UInt32UidFactory.cs" />
     <Compile Include="Utils\BinaryExt.cs" />
     <Compile Include="Utils\ExtDatetime.cs" />

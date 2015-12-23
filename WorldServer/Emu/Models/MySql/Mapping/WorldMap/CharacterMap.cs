@@ -14,8 +14,9 @@ namespace WorldServer.Emu.Models.MySql.Mapping.WorldMap
 
             LazyLoad();
 
+            Id(x => x.CreatedId, "c_created_id").Not.Nullable();
             Map(x => x.AccountId, "c_account_id").Not.Nullable();
-            Id(x => x.CharacterId, "c_character_id").GeneratedBy.Identity();
+            Map(x => x.CharacterId, "c_character_id").Not.Nullable();
             Map(x => x.Level, "c_character_level").Not.Nullable();
             Map(x => x.AppearancePresets, "c_character_appearance_presets").Not.Nullable();
             Map(x => x.AppearanceOptions, "c_character_appearance_options").Not.Nullable();

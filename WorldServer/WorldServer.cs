@@ -6,6 +6,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using WorldServer.Emu;
+using WorldServer.Emu.Data;
 using WorldServer.Emu.Networking;
 
 namespace WorldServer
@@ -63,6 +64,8 @@ namespace WorldServer
 
         private static void InitializeServices()
         {
+            DataLoader.LoadAll();
+
             Core.Act(s =>
             {
                 s.ReloadProcessors();

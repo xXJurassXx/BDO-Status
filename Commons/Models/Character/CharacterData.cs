@@ -1,12 +1,15 @@
 ﻿using System;
 using Commons.Enums;
-
+/*
+   Author:Sagara
+*/
 namespace Commons.Models.Character
 {
     public class CharacterData
     {
+        public virtual int CreatedId { get; set; }
         public virtual int AccountId { get; set; }
-        public virtual uint CharacterId { get; set; }
+        public virtual int CharacterId { get; set; }
         public virtual int Level { get; set; }
         public virtual byte[] AppearancePresets { get; set; }
         public virtual byte[] AppearanceOptions { get; set; }
@@ -26,5 +29,7 @@ namespace Commons.Models.Character
         public virtual byte Goatee { get { return AppearancePresets[2]; } }
         public virtual byte Mustache { get { return AppearancePresets[3]; } }
         public virtual byte Sideburns { get { return AppearancePresets[4]; } }
+
+        public virtual object EquipmentData { get; set; }
     }
 }

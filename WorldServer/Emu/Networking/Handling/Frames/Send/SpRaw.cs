@@ -1,5 +1,7 @@
 ﻿using Commons.Utils;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     public class SpRaw : APacketProcessor
