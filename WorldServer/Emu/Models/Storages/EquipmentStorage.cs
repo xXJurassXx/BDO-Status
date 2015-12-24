@@ -8,7 +8,7 @@ using WorldServer.Emu.Models.Storages.Abstracts;
 
 namespace WorldServer.Emu.Models.Storages
 {
-    public class EquipmentStorage : AStorage
+    public class EquipmentStorage : AStorage, IDisposable
     {
         public EquipmentStorage(Dictionary<short, AStorageItem> itemDatas, short storageSize) : base(itemDatas, storageSize)
         {
@@ -168,6 +168,12 @@ namespace WorldServer.Emu.Models.Storages
                 return true;
 
             return false;
+        }
+
+        public void Dispose()
+        {
+            Items.Clear();
+            Log.Debug($"Temporary instance {GetType().Name} destroyed.");
         }
     }
 }

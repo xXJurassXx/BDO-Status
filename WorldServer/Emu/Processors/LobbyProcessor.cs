@@ -110,11 +110,10 @@ namespace WorldServer.Emu.Processors
                     connection.Characters = new List<CharacterData>();
 
                 foreach (var characterData in connection.Characters)
-                {
-                    var equipment = db.QueryOver<CharacterItem>().Where(i => i.CharacterId == characterData.CharacterId && i.StorageType == (int) StorageType.Equipment).List();  
-                    //TODO equipment on character list                  
-                }
-
+                    characterData.EquipmentData = new EquipmentStorage(db.QueryOver<CharacterItem>().Where(i => 
+                              i.CharacterId == characterData.CharacterId && i.StorageType == (int)StorageType.Equipment).List().ToDictionary<CharacterItem, short, AStorageItem>(e => 
+                              (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count)), 48);           
+                
                 new SpCharacterList(connection.Account, connection.Characters).Send(connection);
 
                 /*Character client setting?*/
