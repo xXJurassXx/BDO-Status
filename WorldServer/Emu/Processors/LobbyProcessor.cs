@@ -155,7 +155,7 @@ namespace WorldServer.Emu.Processors
                             ItemUid = _itemsUidsFactory.Next(),
                             Slot = item.Key - 1,
                             Count = item.Value.Count,
-                            StorageType = (int) StorageType.Inventory
+                            StorageType = (int) ((InventoryItem)item.Value).StorageType
                         }))                       
                             db.Save(daoItem);
                         
@@ -170,7 +170,6 @@ namespace WorldServer.Emu.Processors
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-
                         Log.Error($"Cannot create character\n{ex}");
                     }                   
                 }
@@ -202,8 +201,6 @@ namespace WorldServer.Emu.Processors
                     catch(Exception ex)
                     {
                         transaction.Rollback();
-
-
                         Log.Error(ex);
                     }
                 }
@@ -225,7 +222,7 @@ namespace WorldServer.Emu.Processors
                             ItemUid = _itemsUidsFactory.Next(),
                             Slot = item.Key - 1,
                             Count = item.Value.Count,
-                            StorageType = (int)StorageType.Inventory
+                            StorageType = (int)((InventoryItem)item.Value).StorageType
                         })) db.Update(daoItem);
 
                         db.Update(connection.ActivePlayer.DatabaseCharacterData);
@@ -252,10 +249,17 @@ namespace WorldServer.Emu.Processors
             using (var db = _gsDbFactory.OpenSession())
             {
                var daoItems = db.QueryOver<CharacterItem>().Where(i => i.CharacterId == characterId).List();
-               var items = daoItems.ToDictionary<CharacterItem, short, AStorageItem>(data => (short) (data.Slot + 1), data => new InventoryItem(data.ItemId, data.Count));
-               var inventory = new InventoryStorage(items, 48);
 
-                player.Inventory = inventory;
+               var items = daoItems.Where(s => s.StorageType == (int)StorageType.Inventory);
+
+               var equipItems = daoItems.Where(s => s.StorageType == (int) StorageType.Equipment);
+               var equipDict = equipItems.ToDictionary<CharacterItem, short, AStorageItem>(e => (short) (e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count));
+               var itemsDict = items.ToDictionary<CharacterItem, short, AStorageItem>(e => (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count));
+               var inventory = new InventoryStorage(itemsDict, 48);
+               var equipment = new EquipmentStorage(equipDict, 40);
+
+               player.Inventory = inventory;
+               player.Equipment = equipment;
             }
 
             connection.ActivePlayer = player;
