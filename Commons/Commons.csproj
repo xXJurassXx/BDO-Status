@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Enums\ChatType.cs" />
     <Compile Include="Enums\ClassType.cs" />
+    <Compile Include="Enums\EquipSlot.cs" />
     <Compile Include="Enums\EquipType.cs" />
     <Compile Include="Enums\StorageType.cs" />
     <Compile Include="Enums\Zodiac.cs" />

@@ -9,7 +9,7 @@ namespace WorldServer.Emu.Models.MySql.Mapping.WorldMap
         {
             Table("bd_items");
 
-            //LazyLoad();
+            LazyLoad();
 
             Id(s => s.ItemUid, "i_item_uid");
             Map(x => x.CharacterId, "i_character_id").Not.Nullable();

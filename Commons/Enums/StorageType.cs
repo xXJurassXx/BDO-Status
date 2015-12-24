@@ -1,4 +1,7 @@
-﻿namespace Commons.Enums
+﻿/*
+   Author:Sagara
+*/
+namespace Commons.Enums
 {
     public enum StorageType
     {

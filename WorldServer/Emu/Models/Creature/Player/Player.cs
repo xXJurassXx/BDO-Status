@@ -19,6 +19,8 @@ namespace WorldServer.Emu.Models.Creature.Player
 
         public InventoryStorage Inventory;
 
+        public EquipmentStorage Equipment;
+
         public Player(ClientConnection connection, CharacterData characterData) : base(ObjectFamily.Player)
         {
             Connection = connection;

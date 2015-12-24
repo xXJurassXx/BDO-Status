@@ -116,10 +116,12 @@ namespace WorldServer.Emu.Models.Storages
         {
             var items = new Dictionary<short, AStorageItem>();
 
-            items.Add(1, new InventoryItem(1, CfgCore.Default.StartedMoney));
+            items.Add(1, new InventoryItem(1, CfgCore.Default.StartedMoney) {StorageType = StorageType.Inventory});
             switch (profession)
             {
-                    
+               case ClassType.Ranger:
+                    items.Add(14 + 1, new InventoryItem(14205) {StorageType = StorageType.Equipment}); //for test only
+                    break;
             } 
 
             return new InventoryStorage(items, 48);

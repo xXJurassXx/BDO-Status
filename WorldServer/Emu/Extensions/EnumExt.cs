@@ -38,5 +38,57 @@ namespace WorldServer.Emu.Extensions
             }
             return 0;
         }
+
+        public static int SlotByEquipType(EquipType slot)
+        {
+            return GetSlotByEquipType(slot).GetHashCode();
+        }
+
+        public static EquipSlot GetSlotByEquipType(EquipType type)
+        {
+            //Todo:others
+            switch (type)
+            {
+                case EquipType.Sword:
+                case EquipType.TwinBlades:
+                case EquipType.Katana:
+                case EquipType.Axe:
+                case EquipType.Bow:
+                case EquipType.Talisman:
+                    return EquipSlot.LeftHand; //weapon slot
+                case EquipType.SubWeapon:
+                case EquipType.Dagger:
+                    return EquipSlot.RightHand; //subweapon slot
+                case EquipType.WeaponStyle:
+                    return EquipSlot.AvatarWeapon;
+                case EquipType.SubWeaponStyle:
+                    return EquipSlot.AvatarSubWeapon;
+                case EquipType.Upperbody:
+                    return EquipSlot.Chest;
+                case EquipType.UpperbodyStyle:
+                    return EquipSlot.AvatarChest;
+                case EquipType.Underwear:
+                    return EquipSlot.AvatarUnderWear;
+                case EquipType.Ring:
+                    return EquipSlot.Ring1;//todo ring2 too
+                case EquipType.Necklace:
+                    return EquipSlot.Necklace;
+                case EquipType.Head:
+                    return EquipSlot.Helm;
+                case EquipType.HeadStyle:
+                    return EquipSlot.AvatarHelm;
+                case EquipType.Hand:
+                    return EquipSlot.Glove;
+                case EquipType.HandStyle:
+                    return EquipSlot.AvatarGlove;
+                case EquipType.Foot:
+                    return EquipSlot.Boots;
+                case EquipType.FootStyle:
+                    return EquipSlot.AvatarBoots;
+                case EquipType.Accessory:
+                    return EquipSlot.FaceDecoration1;//todo decorations
+            }
+            return EquipSlot.None;
+        }
     }
 }
