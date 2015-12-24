@@ -7,7 +7,6 @@ using Commons.Utils;
 using NHibernate.Util;
 using WorldServer.Emu.Extensions;
 using WorldServer.Emu.Models.Storages;
-
 /*
    Author:Sagara
 */
@@ -70,24 +69,23 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
                 for (int index = 0; index < _characters.Count; index++)
                 {
                     var characterInfo = _characters[index];
-
                     var equipment = (EquipmentStorage)characterInfo.EquipmentData;
-
 
                     writer.WriteH(characterInfo.ClassType.Ordinal());
                     writer.WriteQ(characterInfo.CharacterId);
                     writer.WriteC(0);
                     writer.Write(BinaryExt.WriteFixedString(characterInfo.CharacterName, Encoding.Unicode, 62));
                     writer.WriteQ(characterInfo.Level);
-                    if (equipment.Items != null)
-                    {
-                        using (equipment)
-                            writer.Write(equipment.GetEquipmentData());
 
-                        writer.Skip(76);
-                    }
-                    else 
-                        writer.Write(_inventoryField);
+                    using (equipment)
+                        if (equipment.Items.Count != 0)
+                        {
+                            writer.Write(equipment.GetEquipmentData());
+                            writer.Skip(76);
+                        }
+                        else
+                            writer.Write(_inventoryField);
+
                     writer.Write(characterInfo.AppearancePresets);
                     writer.WriteC((byte)characterInfo.Zodiac);
                     writer.Write(characterInfo.AppearanceOptions);

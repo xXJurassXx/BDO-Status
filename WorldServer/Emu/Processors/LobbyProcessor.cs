@@ -109,11 +109,12 @@ namespace WorldServer.Emu.Processors
                 else
                     connection.Characters = new List<CharacterData>();
 
-                foreach (var characterData in connection.Characters)
+                foreach (var characterData in connection.Characters)               
                     characterData.EquipmentData = new EquipmentStorage(db.QueryOver<CharacterItem>().Where(i => 
-                              i.CharacterId == characterData.CharacterId && i.StorageType == (int)StorageType.Equipment).List().ToDictionary<CharacterItem, short, AStorageItem>(e => 
-                              (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count)), 48);           
+                    i.CharacterId == characterData.CharacterId && i.StorageType == (int)StorageType.Equipment).List().ToDictionary<CharacterItem, short, AStorageItem>(e => 
+                    (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count) {StorageType = (StorageType) e.StorageType}), 48);           
                 
+
                 new SpCharacterList(connection.Account, connection.Characters).Send(connection);
 
                 /*Character client setting?*/
@@ -146,6 +147,10 @@ namespace WorldServer.Emu.Processors
                         characterData.Level = 1;
                         characterData.CreationDate = DateTime.Now;
                         characterData.CreatedId = 0;//for nhibernate driver
+                        characterData.PositionX = -96297;
+                        characterData.PositionY = -3872;
+                        characterData.PositionZ = 77811;
+
                         var inventory = InventoryStorage.GetDefault(characterData.ClassType);
                         foreach (var daoItem in inventory.Items.Select(item => new CharacterItem
                         {
@@ -258,7 +263,7 @@ namespace WorldServer.Emu.Processors
         {
             var player = new Player(connection, connection.Characters.First(s => s.CharacterId == characterId))
             {
-                GameSessionId = _gameSessionFactory.Next()
+                GameSessionId = _gameSessionFactory.Next(),
             };
 
             using (var db = _gsDbFactory.OpenSession())
@@ -274,9 +279,9 @@ namespace WorldServer.Emu.Processors
                     if (it.StorageType == (int) StorageType.Inventory)
                         items.Add(it);
                 }
-
-                player.Inventory = new InventoryStorage(items.ToDictionary<CharacterItem, short, AStorageItem>(e => (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count)), 48);
-                player.Equipment = new EquipmentStorage(equipItems.ToDictionary<CharacterItem, short, AStorageItem>(e => (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count)), 48);
+                
+                player.Inventory = new InventoryStorage(items.ToDictionary<CharacterItem, short, AStorageItem>(e => (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count) {StorageType = (StorageType) e.StorageType}), 48);
+                player.Equipment = new EquipmentStorage(equipItems.ToDictionary<CharacterItem, short, AStorageItem>(e => (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count) {StorageType = (StorageType) e.StorageType}), 48);
             }
 
             connection.ActivePlayer = player;
@@ -338,11 +343,7 @@ namespace WorldServer.Emu.Processors
             var sessionId = BitConverter.GetBytes(connection.ActivePlayer.GameSessionId).ToHex();
             var uid = BitConverter.GetBytes(connection.ActivePlayer.Uid).ToHex();
 
-            #region Cutseen
-            new SpRaw("ABE7FFFFFFFFFFFFABE7FFFFFFFFFFFF" +
-                      sessionId + //game session
-                      "080000007800000000000000420A000000000000000000000000000000", 0x0f5f).SendRaw(connection);
-            #endregion
+            new SpUpdateLevel(connection.ActivePlayer).Send(connection);
 
             #region I have no idea what these 2 do, but they are used.
             new SpRaw(sessionId + //game session
@@ -475,7 +476,11 @@ namespace WorldServer.Emu.Processors
 
             new SpCharacterCustimozationData(connection.ActivePlayer).Send(connection);
 
-            Core.Act(s => s.CharacterProcessor.EndLoad(connection));
+            Core.Act(s =>
+            {
+                s.CharacterProcessor.EndLoad(connection);
+                s.WorldProcessor.EndLoad(connection);
+            });
         }
 
         public object OnUnload()

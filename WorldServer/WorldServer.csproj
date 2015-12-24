@@ -88,6 +88,10 @@
     <Compile Include="Emu\Extensions\EnumExt.cs" />
     <Compile Include="Emu\Interfaces\IProcessor.cs" />
     <Compile Include="Emu\Models\ABdoObject.cs" />
+    <Compile Include="Emu\Models\AI\Abstracts\AAi.cs" />
+    <Compile Include="Emu\Models\AI\Abstracts\ACreatureAi.cs" />
+    <Compile Include="Emu\Models\AI\Abstracts\AVisibleObjectAi.cs" />
+    <Compile Include="Emu\Models\AI\PlayerAI.cs" />
     <Compile Include="Emu\Models\Creature\Player\Player.cs" />
     <Compile Include="Emu\Models\MySql\Mapping\WorldMap\CharacterMap.cs" />
     <Compile Include="Emu\Models\MySql\Mapping\LoginMap\UserMap.cs" />
@@ -122,12 +126,17 @@
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpSpawnCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpUnk2.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SpUpdateLevel.cs" />
     <Compile Include="Emu\Networking\Handling\PacketHandler.cs" />
     <Compile Include="Emu\Networking\NetworkService.cs" />
     <Compile Include="Emu\Networking\TcpServer.cs" />
     <Compile Include="Emu\Processors\AuthProcessor.cs" />
     <Compile Include="Emu\Processors\CharacterProcessor.cs" />
     <Compile Include="Emu\Processors\LobbyProcessor.cs" />
+    <Compile Include="Emu\Processors\WorldProcessor.cs" />
+    <Compile Include="Emu\Structures\Geo\Area.cs" />
+    <Compile Include="Emu\Structures\Geo\Basics\MovementAction.cs" />
+    <Compile Include="Emu\Structures\Geo\Basics\Position.cs" />
     <Compile Include="WorldServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

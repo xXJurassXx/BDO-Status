@@ -60,14 +60,21 @@ namespace WorldServer.Emu.Processors
                             case Player.PlayerAction.Chat:
                                 var chatType = (ChatType) parameters[0];
                                 var message = (string) parameters[1];
+
                                 switch (chatType)
                                 {
                                     case ChatType.World:
                                         foreach (var receiver in _onlineCharacters.Values)
                                             new SpChat(message, player.GameSessionId, player.DatabaseCharacterData.CharacterName, ChatType.World).Send(receiver.Connection);
-                                        break; 
-                                                        
-                                    //TODO - Other types send on visible ai
+                                        break;
+                                   
+                                    case ChatType.Public:
+                                        player.VisibleAi.NotifyObjectsThatSeeMe<Player>(s =>
+                                        {
+                                            new SpChat(message, player.GameSessionId, player.DatabaseCharacterData.CharacterName, ChatType.Public).Send(s.Connection);
+                                        });
+                                        new SpChat(message, player.GameSessionId, player.DatabaseCharacterData.CharacterName, ChatType.Public).Send(connection);
+                                        break;                           
                                 }
                                 break;
                         }

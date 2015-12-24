@@ -3,10 +3,22 @@
   <Profiles />
   <Settings>
     <Setting Name="LogoutSeconds" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="StartedMoney" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10000</Value>
+    </Setting>
+    <Setting Name="VisibleRangeDistance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="WorldChannelsCount" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="MaxPlayersCountOnArea" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="AdminCommandPrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">`</Value>
     </Setting>
   </Settings>
 </SettingsFile>

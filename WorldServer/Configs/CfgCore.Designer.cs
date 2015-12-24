@@ -25,7 +25,7 @@ namespace WorldServer.Configs {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int LogoutSeconds {
             get {
                 return ((int)(this["LogoutSeconds"]));
@@ -44,6 +44,54 @@ namespace WorldServer.Configs {
             }
             set {
                 this["StartedMoney"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int VisibleRangeDistance {
+            get {
+                return ((int)(this["VisibleRangeDistance"]));
+            }
+            set {
+                this["VisibleRangeDistance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int WorldChannelsCount {
+            get {
+                return ((int)(this["WorldChannelsCount"]));
+            }
+            set {
+                this["WorldChannelsCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int MaxPlayersCountOnArea {
+            get {
+                return ((int)(this["MaxPlayersCountOnArea"]));
+            }
+            set {
+                this["MaxPlayersCountOnArea"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("`")]
+        public string AdminCommandPrefix {
+            get {
+                return ((string)(this["AdminCommandPrefix"]));
+            }
+            set {
+                this["AdminCommandPrefix"] = value;
             }
         }
     }

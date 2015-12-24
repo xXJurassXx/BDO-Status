@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using Commons.UID;
 using NLog;
+using WorldServer.Emu.Models.AI;
+using WorldServer.Emu.Models.AI.Abstracts;
+using WorldServer.Emu.Structures.Geo;
+using WorldServer.Emu.Structures.Geo.Basics;
 
 namespace WorldServer.Emu.Models
 {
@@ -23,6 +27,26 @@ namespace WorldServer.Emu.Models
         /// Object unique id on factory
         /// </summary>
         public long Uid { get; private set; }
+
+        /// <summary>
+        /// Current object Area
+        /// </summary>
+        public Area Area { get; set; }
+
+        /// <summary>
+        /// Object position in world
+        /// </summary>
+        public Position Position { get; set; }
+
+        /// <summary>
+        /// Object AI
+        /// </summary>
+        public ACreatureAi Ai { get; protected set; }
+
+        /// <summary>
+        /// Cast object AI as Visible AI
+        /// </summary>
+        public AVisibleObjectAi VisibleAi => Ai;
 
         /// <summary>
         /// Object factories
