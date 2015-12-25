@@ -94,5 +94,17 @@ namespace WorldServer.Configs {
                 this["AdminCommandPrefix"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LogUnkPackets {
+            get {
+                return ((bool)(this["LogUnkPackets"]));
+            }
+            set {
+                this["LogUnkPackets"] = value;
+            }
+        }
     }
 }

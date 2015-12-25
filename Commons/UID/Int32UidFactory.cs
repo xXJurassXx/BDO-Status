@@ -9,8 +9,7 @@ namespace Commons.UID
 
         public Int32UidFactory(int val = 1)
         {
-            if (val != 1)
-                _nextUid = val + 1;
+             _nextUid = val + 1;
         }
 
         public int Next()

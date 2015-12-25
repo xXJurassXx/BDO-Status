@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using Commons.Utils;
+using WorldServer.Configs;
 using WorldServer.Emu.Networking.Handling.Frames.Recv;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
 /*
@@ -27,6 +28,7 @@ namespace WorldServer.Emu.Networking.Handling
             ClientFrames.TryAdd(0x10b0, typeof(RpEnterOnWorldProcess));
             ClientFrames.TryAdd(0x0bdb, typeof(RpRequestDisconnect));
             ClientFrames.TryAdd(0x0e87, typeof(RpChat));
+            ClientFrames.TryAdd(0x0d04, typeof(RpMovement));
 
             ServerFrames.TryAdd(typeof(SpUnk), 0x0c98);
             ServerFrames.TryAdd(typeof(SpUnk2), 0x0c74);
@@ -70,7 +72,7 @@ namespace WorldServer.Emu.Networking.Handling
 
                 if (ClientFrames.ContainsKey(opCode)) //check, if packet exist
                     ((APacketProcessor)Activator.CreateInstance(ClientFrames[opCode])).Process(client, body);//process packet  
-                else
+                else if(CfgCore.Default.LogUnkPackets)
                     Console.WriteLine($"Unknown packet\nOpCode {opCode}\nData:\n {body.FormatHex()}"); //if packet not exist, we cannot proccess hem, just write log
             }
         }

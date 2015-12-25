@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Commons.Models.Character;
+using SharpDX;
 using WorldServer.Configs;
 using WorldServer.Emu.Models.AI;
 using WorldServer.Emu.Models.Storages;
@@ -30,7 +31,7 @@ namespace WorldServer.Emu.Models.Creature.Player
         {
             Connection = connection;
             DatabaseCharacterData = characterData;
-            Position = new Position(characterData.PositionX, characterData.PositionY, characterData.PositionZ);
+            Position = new Position(new Vector3(characterData.PositionX, characterData.PositionY, characterData.PositionZ));
             Ai = new PlayerAI(this, CfgCore.Default.VisibleRangeDistance);
         }
 

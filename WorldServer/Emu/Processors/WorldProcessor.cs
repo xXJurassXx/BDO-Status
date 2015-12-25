@@ -63,10 +63,11 @@ namespace WorldServer.Emu.Processors
 
                     var player = (Player)obj;
 
-                    player.Position.X = movement.StartPosition.X;
-                    player.Position.Y = movement.StartPosition.Y;
-                    player.Position.Z = movement.StartPosition.Z;
+                    player.Position.Point.X = movement.StartPosition.Point.X;
+                    player.Position.Point.Y = movement.StartPosition.Point.Y;
+                    player.Position.Point.Z = movement.StartPosition.Point.Z;
                     player.Position.Heading = movement.Heading;
+
                     player.VisibleAi.OwnerMoved(movement);
 
                     break;

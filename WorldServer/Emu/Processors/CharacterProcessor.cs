@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Commons.Enums;
-using NHibernate.Util;
 using NLog;
 using WorldServer.Configs;
 using WorldServer.Emu.Interfaces;
 using WorldServer.Emu.Models.Creature.Player;
 using WorldServer.Emu.Networking;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
+using WorldServer.Scripts;
+using WorldServer.Scripts.AdminCommands;
 
 namespace WorldServer.Emu.Processors
 {
@@ -41,8 +42,20 @@ namespace WorldServer.Emu.Processors
         public void OnLoad(object previousInstanceContext)
         {
             Requests = new CRequests();
-            ChatProcessor = new ChatSubProcessor();
+            ChatProcessor = new ChatSubProcessor(_onlineCharacters);
         }
+
+        /// <summary>
+        /// Get player list from online collection
+        /// </summary>
+        public List<Player> OnlineList
+        {
+            get
+            {
+                lock (_lOnline)
+                    return _onlineCharacters.Values.ToList();
+            }
+        } 
 
         public void EndLoad(ClientConnection connection)
         {
@@ -67,7 +80,7 @@ namespace WorldServer.Emu.Processors
                                 break;
 
                             case Player.PlayerAction.Chat:
-                                ChatProcessor.HandleChatMessage(connection, parameters, _onlineCharacters);
+                                ChatProcessor.HandleChatMessage(connection, parameters);
                                 break;
                         }
                     };
@@ -98,103 +111,75 @@ namespace WorldServer.Emu.Processors
             }
         }
 
-        /**
-           * Author: InCube
+        /*
+            Author: InCube, Sagara
         */
         public class ChatSubProcessor
         {
-            private readonly object _cLock = new object();
-
-            private enum CommandList
+            /// <summary>
+            /// [accessLevel][CommandName][CommandCompile]
+            /// </summary>
+            public static readonly Dictionary<int, Dictionary<string, Type>> Commands = new Dictionary<int, Dictionary<string, Type>>
             {
-                GM_SPAWN_MOB,
-                GM_KICK_PLAYER,
-                NONE
+                {0, new Dictionary<string, Type> { {"Kick", typeof(ScrKick) } } }
             };
 
-            private readonly Dictionary<string, Dictionary<short, CommandList>> _commands = new Dictionary
-                <string, Dictionary<short, CommandList>>
-            {
-                // Command  <Permission Level,  Command Enum> { List of available command levels }
-                {"spawn", new Dictionary<short, CommandList> {{0, CommandList.GM_SPAWN_MOB}}},
-                {"kick", new Dictionary<short, CommandList> {{0, CommandList.GM_KICK_PLAYER}}},
-            };
+            private Dictionary<int, Player> _onlinePlayers;
 
-            private Dictionary<int, Player> _onlinePlayers; 
-
-            public void HandleChatMessage(ClientConnection client, object[] parameters, Dictionary<int, Player> onlineCharacters)
+            public ChatSubProcessor(Dictionary<int, Player> onlineContainer)
             {
-                _onlinePlayers = onlineCharacters;
-                if (ParseCommands((string)parameters[1], client.Account.AccessLevel))
+                _onlinePlayers = onlineContainer;
+            }
+          
+            public void HandleChatMessage(ClientConnection client, object[] parameters)
+            {
+                if (ProcessCommand(client, (string)parameters[1], client.Account.AccessLevel))
                     return; // Since we are parsing the command, there is no need to reply to client
 
                 switch ((ChatType)parameters[0])
                 {
-                    case ChatType.Alliance:         break; // TODO
-                    case ChatType.Friend:           break; // TODO
-                    case ChatType.Guild:            break; // TODO
-                    case ChatType.Party:            break; // TODO
-                    case ChatType.Private:          break; // TODO
                     case ChatType.Public:
-                        client.ActivePlayer.VisibleAi.NotifyObjectsThatSeeMe<Player>(s
-                            => new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(s.Connection));
+                        client.ActivePlayer.VisibleAi.NotifyObjectsThatSeeMe<Player>(s => new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(s.Connection));
                         new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, ChatType.Public).Send(client);
                         break;
+
                     case ChatType.World:
                     case ChatType.WorldWithItem: // TODO
-                        foreach (var receiver in onlineCharacters.Values)
+                        foreach (var receiver in _onlinePlayers.Values)
                             new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(receiver.Connection);
                         break;
                 }
+
                 Log.Debug("Received message: {0}", (string)parameters[1]);
             }
 
-            private bool ParseCommands(string text, int accessLevel)
+            private bool ProcessCommand(ClientConnection client, string text, int accessLevel)
             {
                 if (text[0] != '!' && text[0] != '`' || text[0] < 3)
                     return false;
-                var str = text.Split(' ');
-                var command = _commands.FirstOrDefault(x => x.Key == str[0].Substring(1, str[0].Length - 1));
-                var hasAccess = false;
-                var commandListCommand = CommandList.NONE;
-                
-                
-                foreach (var cmd in command.Value.Where(cmd => cmd.Key <= accessLevel))
+
+                var commandName = text.Split(' ')[0].Replace("!", "").Replace("`", "");
+
+                var command = Commands.Values.FirstOrDefault(s => s.ContainsKey(commandName));
+                if (command != null)
                 {
-                    hasAccess = true;
-                    commandListCommand = cmd.Value;
-                }
-
-
-                return hasAccess && ExecuteCommand(commandListCommand, str);
-            }
-
-            private bool ExecuteCommand(CommandList command, IEnumerable<string> parameters)
-            {
-                lock (_cLock)
-                {
-                    switch (command)
+                    var selected = Commands.FirstOrDefault(s => s.Value == command);
+                    if (accessLevel < selected.Key) //if user dont have access for that command
+                        return false;                
+                    try
                     {
-                        case CommandList.GM_SPAWN_MOB:
-                            // TODO
-                            Log.Debug("Should spawn a mob!");
-                            break;
-                        case CommandList.GM_KICK_PLAYER:
-                            foreach (var player2 in parameters.Select(player
-                                =>
-                                _onlinePlayers.Where(
-                                    x =>
-                                        x.Value.DatabaseCharacterData.CharacterName.ToLower().Contains(player.ToLower())))
-                                .SelectMany(thePlayers => thePlayers))
-                            {
-                                Log.Info("[GM] Kicked player {0}", player2.Value.DatabaseCharacterData.CharacterName);
-                                player2.Value.Connection.CloseConnection();
-                            }
-                            break;
+                        ((ICommandScript)Activator.CreateInstance(command[commandName])).Process(client, text.Split(' ').Skip(1).ToArray());                      
                     }
+                    catch (Exception e)
+                    {
+                        Log.Error($"Something wrong happened, while try to process command {command.GetType().Name}, \nEx:{e}");
+                    }                   
                 }
-
-                return true;
+                else
+                    return false; //command not found
+   
+                
+                return false;
             }
         }
     }

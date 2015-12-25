@@ -1,43 +1,30 @@
 ﻿using System;
+using SharpDX;
 
 namespace WorldServer.Emu.Structures.Geo.Basics
 {
     public class Position
     {
-        public float X;
-        public float Y;
-        public float Z;
         public float Cosinus;
         public float Sinus;
 
         public short Heading;
 
-        public Position(float x, float y)
-        {
-            X = x;
-            Y = y;
-        }
+        public Vector3 Point;
 
-        public Position(float x, float y, float z)
+        public Position(Vector3 point)
         {
-            X = x;
-            Y = y;
-            Z = z;
+            Point = point;           
         }
 
         public double Distance(Position target)
         {
-            var distance =
-                      (X - target.X) * (X - target.X) +
-                      (Y - target.Y) * (Y - target.Y) +
-                      (Z - target.Z) * (Z - target.Z);
-
-            return Math.Sqrt(distance);
+            return Point.Distance(new Vector3(target.Point.X, target.Point.Y, target.Point.Z));
         }
 
         public void UpdateHeading(Position target)
         {
-            Heading = (short)(Math.Atan2(target.Y - Y, target.X - X) * 32768 / Math.PI);
+            Heading = (short)(Math.Atan2(target.Point.Y - Point.Y, target.Point.X - Point.X) * 32768 / Math.PI);       
         }
     }
 }

@@ -56,6 +56,9 @@
       <HintPath>..\BlackDesertEmu\packages\NLog.4.2.2\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\Downloads\sharp\Bin\DirectX11-net40\SharpDX.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -110,6 +113,7 @@
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpEnterOnWorldRequest.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpGetToken.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpHeartbeat.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\RpMovement.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpRequestDisconnect.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustimozationData.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustomizationResponse.cs" />
@@ -137,6 +141,9 @@
     <Compile Include="Emu\Structures\Geo\Area.cs" />
     <Compile Include="Emu\Structures\Geo\Basics\MovementAction.cs" />
     <Compile Include="Emu\Structures\Geo\Basics\Position.cs" />
+    <Compile Include="Emu\Structures\Geo\Geom.cs" />
+    <Compile Include="Scripts\AdminCommands\ScrKick.cs" />
+    <Compile Include="Scripts\ICommandScript.cs" />
     <Compile Include="WorldServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -156,7 +163,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\PlayerCommands\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
