@@ -143,7 +143,9 @@
     <Compile Include="Emu\Structures\Geo\Basics\Position.cs" />
     <Compile Include="Emu\Structures\Geo\Geom.cs" />
     <Compile Include="Scripts\AdminCommands\ScrKick.cs" />
+    <Compile Include="Scripts\AdminCommands\ScrTest.cs" />
     <Compile Include="Scripts\ICommandScript.cs" />
+    <Compile Include="Scripts\PlayerCommands\ScrOnline.cs" />
     <Compile Include="WorldServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -163,9 +165,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\PlayerCommands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

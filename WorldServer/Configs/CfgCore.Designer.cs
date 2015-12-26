@@ -106,5 +106,17 @@ namespace WorldServer.Configs {
                 this["LogUnkPackets"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int AccesForAdminCommand {
+            get {
+                return ((int)(this["AccesForAdminCommand"]));
+            }
+            set {
+                this["AccesForAdminCommand"] = value;
+            }
+        }
     }
 }

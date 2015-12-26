@@ -44,13 +44,18 @@ namespace WorldServer.Emu.Networking
 
         public void CloseConnection()
         {
+            Release();
+
+            Socket.Close();
+        }
+
+        public void Release()
+        {
             if (ActivePlayer != null)
             {
                 ActivePlayer.Dispose();
                 ActivePlayer = null;
             }
-
-            Socket.Close();
         }
     }
 }

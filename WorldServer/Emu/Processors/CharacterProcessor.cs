@@ -10,6 +10,7 @@ using WorldServer.Emu.Networking;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
 using WorldServer.Scripts;
 using WorldServer.Scripts.AdminCommands;
+using WorldServer.Scripts.PlayerCommands;
 
 namespace WorldServer.Emu.Processors
 {
@@ -34,6 +35,7 @@ namespace WorldServer.Emu.Processors
         /// Online characters collection
         /// </summary>
         private readonly Dictionary<int, Player> _onlineCharacters = new Dictionary<int, Player>();
+
         /// <summary>
         /// Object for lock collection
         /// </summary>
@@ -121,10 +123,17 @@ namespace WorldServer.Emu.Processors
             /// </summary>
             public static readonly Dictionary<int, Dictionary<string, Type>> Commands = new Dictionary<int, Dictionary<string, Type>>
             {
-                {0, new Dictionary<string, Type> { {"Kick", typeof(ScrKick) } } }
+                {
+                    5, new Dictionary<string, Type>
+                    {
+                        {"Kick", typeof(ScrKick) },
+                        {"test", typeof(ScrTest) } 
+                    }                    
+                },
+                {0, new Dictionary<string, Type> { {"online", typeof(ScrOnline) } } }
             };
 
-            private Dictionary<int, Player> _onlinePlayers;
+            private readonly Dictionary<int, Player> _onlinePlayers;
 
             public ChatSubProcessor(Dictionary<int, Player> onlineContainer)
             {
@@ -144,7 +153,6 @@ namespace WorldServer.Emu.Processors
                         break;
 
                     case ChatType.World:
-                    case ChatType.WorldWithItem: // TODO
                         foreach (var receiver in _onlinePlayers.Values)
                             new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(receiver.Connection);
                         break;
@@ -155,8 +163,11 @@ namespace WorldServer.Emu.Processors
 
             private bool ProcessCommand(ClientConnection client, string text, int accessLevel)
             {
-                if (text[0] != '!' && text[0] != '`' || text[0] < 3)
-                    return false;
+                if (text.StartsWith("`") && accessLevel < CfgCore.Default.AccesForAdminCommand)
+                    return false; //dont have access for admin commands
+
+                if (!text.StartsWith("`") && !text.StartsWith("!"))
+                    return false; //not command
 
                 var commandName = text.Split(' ')[0].Replace("!", "").Replace("`", "");
 
@@ -168,7 +179,8 @@ namespace WorldServer.Emu.Processors
                         return false;                
                     try
                     {
-                        ((ICommandScript)Activator.CreateInstance(command[commandName])).Process(client, text.Split(' ').Skip(1).ToArray());                      
+                        ((ICommandScript)Activator.CreateInstance(command[commandName])).Process(client, text.Split(' ').Skip(1).ToArray());
+                        return true; //command processed
                     }
                     catch (Exception e)
                     {
@@ -177,8 +189,7 @@ namespace WorldServer.Emu.Processors
                 }
                 else
                     return false; //command not found
-   
-                
+                  
                 return false;
             }
         }

@@ -3,7 +3,9 @@ using Commons.Enums;
 using WorldServer.Emu;
 using WorldServer.Emu.Networking;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
-
+/*
+   Author:Sagara, InCube
+*/
 namespace WorldServer.Scripts.AdminCommands
 {
     public class ScrKick : ICommandScript
