@@ -5,7 +5,9 @@ using Commons.Enums;
 using Commons.Utils;
 using WorldServer.Emu.Extensions;
 using WorldServer.Emu.Models.Storages.Abstracts;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Models.Storages
 {
     public class EquipmentStorage : AStorage, IDisposable

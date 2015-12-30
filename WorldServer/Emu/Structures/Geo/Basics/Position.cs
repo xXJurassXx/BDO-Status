@@ -1,6 +1,8 @@
 ﻿using System;
 using SharpDX;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Structures.Geo.Basics
 {
     public class Position

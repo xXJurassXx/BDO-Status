@@ -7,7 +7,7 @@ namespace Commons.UID
 {
     public class UInt32UidFactory
     {
-        private volatile uint _nextUid;
+        private volatile uint _nextUid = 1;
         private readonly ConcurrentQueue<uint> _freeUidList = new ConcurrentQueue<uint>();
 
         public UInt32UidFactory(uint val = 1U)

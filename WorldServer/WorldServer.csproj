@@ -115,6 +115,7 @@
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpHeartbeat.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpMovement.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\RpRequestDisconnect.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\OPSBlob\SBpPlayerSpawn.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustimozationData.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterCustomizationResponse.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SpCharacterEquipment.cs" />

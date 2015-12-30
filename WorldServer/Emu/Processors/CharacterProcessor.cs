@@ -11,7 +11,9 @@ using WorldServer.Emu.Networking.Handling.Frames.Send;
 using WorldServer.Scripts;
 using WorldServer.Scripts.AdminCommands;
 using WorldServer.Scripts.PlayerCommands;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Processors
 {
     public class CharacterProcessor : IProcessor

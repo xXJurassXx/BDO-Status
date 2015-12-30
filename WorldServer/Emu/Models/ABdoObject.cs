@@ -5,7 +5,9 @@ using NLog;
 using WorldServer.Emu.Models.AI.Abstracts;
 using WorldServer.Emu.Structures.Geo;
 using WorldServer.Emu.Structures.Geo.Basics;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Models
 {
     public abstract class ABdoObject

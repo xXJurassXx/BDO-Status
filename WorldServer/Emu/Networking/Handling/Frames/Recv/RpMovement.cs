@@ -75,6 +75,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
                 }, new Position(new Vector3(0,0,0)), (short) heading, 120, 1);
 
                 Core.Act(s => s.WorldProcessor.ObjectMoved(client.ActivePlayer, movementAcion));
+
                 //Log.Debug("\n----------------\n" +
                 //          $"Type {type} cHeading {cHeading} sHeading {sHeading} calculated heading {heading}\n" +
                 //          $"Cos {cosinus} Sin {sinus}\n" +

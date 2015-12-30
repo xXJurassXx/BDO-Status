@@ -5,7 +5,9 @@ using FluentNHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Mapping;
 using FluentNHibernate.Mapping.Providers;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Extensions
 {
     public static class DaoExt
@@ -30,7 +32,7 @@ namespace WorldServer.Emu.Extensions
         }
 
         /// <summary>
-        /// Private helper method cribbed from FNH source (PersistenModel.cs:151)
+        /// Private helper method cribbed from FNH source
         /// </summary>
         private static bool IsMappingOf<T>(Type type)
         {

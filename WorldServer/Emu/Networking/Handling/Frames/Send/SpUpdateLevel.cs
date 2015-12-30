@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using Commons.Utils;
 using WorldServer.Emu.Models.Creature.Player;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     class SpUpdateLevel : APacketProcessor

@@ -10,6 +10,12 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
         private readonly short _opCode;
         private readonly bool _isCrypted;
 
+        public SpRaw(byte[] data, short opCode, bool isCrypted = true)
+        {
+            _packetData = data;
+            _opCode = opCode;
+            _isCrypted = isCrypted;
+        }
         public SpRaw(string hex, short opCode, bool isCrypted = true)
         {
             _packetData = hex.ToBytes();

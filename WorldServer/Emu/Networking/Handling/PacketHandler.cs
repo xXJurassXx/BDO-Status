@@ -5,6 +5,7 @@ using Commons.Utils;
 using WorldServer.Configs;
 using WorldServer.Emu.Networking.Handling.Frames.Recv;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
+using WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob;
 /*
    Author:Sagara
 */
@@ -43,8 +44,12 @@ namespace WorldServer.Emu.Networking.Handling
             ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
             ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);
             ServerFrames.TryAdd(typeof(SpInventory), 0x0bf1); 
-            ServerFrames.TryAdd(typeof(SpCharacterEquipment), 0x0d5a);
-            ServerFrames.TryAdd(typeof(SpUpdateLevel), 0x0f5f);
+            ServerFrames.TryAdd(typeof(SpCharacterEquipment), 0x0d5a); 
+            ServerFrames.TryAdd(typeof(SpUpdateLevel), 0x0f5f); 
+            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerName), 0x1089); 
+            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerEquipment), 0x1087); 
+            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerFamilyName), 0x1088);
+            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSpawnPlayer), 0x0bb9);
         }
 
         /// <summary>

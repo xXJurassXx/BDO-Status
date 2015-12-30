@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using Commons.Models.Character;
 using Commons.Utils;
+using WorldServer.Emu.Models.Creature.Player;
 /*
    Author:Sagara
 */
@@ -8,8 +8,8 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
     class SpCharacterCustomizationResponse : APacketProcessor
     {
-        private readonly CharacterData _character;
-        public SpCharacterCustomizationResponse(CharacterData character)
+        private readonly Player _character;
+        public SpCharacterCustomizationResponse(Player character)
         {
             _character = character;
         }
@@ -19,11 +19,10 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write("04A4C200".ToBytes()); //game session
-                writer.Write("46B2C16FF2862300".ToBytes());
-                //writer.WriteQ(_character.CharacterId);
-                writer.Write("E86C000002000100320301003B03".ToBytes()); //unk todo
-
+                writer.WriteD(_character.GameSessionId);
+                writer.WriteQ(_character.Uid);
+                writer.Write("E86C0000".ToBytes()); //unk todo
+                writer.Write("02000100320301003B03".ToBytes()); //unk
                 return stream.ToArray();
             }
         }

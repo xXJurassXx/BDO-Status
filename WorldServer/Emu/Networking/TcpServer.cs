@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using Commons.Generics;
 using Commons.Utils;
+using NLog;
 using WorldServer.Emu.Networking.Handling;
 /*
    Author:Sagara
@@ -14,6 +14,8 @@ namespace WorldServer.Emu.Networking
 {
     public class TcpServer
     {
+        private static readonly Logger Log = LogManager.GetLogger(typeof(TcpServer).Name);
+
         private readonly HashSet<Thread> _listeningThreads = new HashSet<Thread>();
 
         private readonly Socket _listeningSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -58,7 +60,7 @@ namespace WorldServer.Emu.Networking
                 _listeningThreads.Add(th);
             }
 
-            Debug.Print($"Tcp server started at {_host}:{_port}");
+            Log.Info($"Tcp server started at {_host}:{_port}");
         }
 
         private readonly byte[] _key =
@@ -96,7 +98,7 @@ namespace WorldServer.Emu.Networking
                 var connection = _connectionsPool.Get();
                 if (connection == null)
                 {
-                    Debug.Print("Connections limit reached! Can't accept new connection");
+                    Log.Info("Connections limit reached! Can't accept new connection");
                 }
                 else
                 {
@@ -128,7 +130,7 @@ namespace WorldServer.Emu.Networking
 
                 if (err != SocketError.Success || readed <= 0)
                 {
-                    Debug.Print("Client disconnected.");
+                    Log.Debug("Client disconnected.");
 
                     connection.Release();
                     connection.Socket.Disconnect(false);
@@ -164,7 +166,7 @@ namespace WorldServer.Emu.Networking
             catch (SocketException) { }
             catch (Exception e)
             {
-                Debug.Print("Exception on packet receive. {0}", e);
+                Log.Info($"Exception on packet receive. {e}");
 
                 if (connection != null)
                     Disconnect(connection);
@@ -179,7 +181,7 @@ namespace WorldServer.Emu.Networking
             }
             catch (Exception e)
             {
-                Debug.Print("Exception occured on begin disconnect, {0}", e);
+                Log.Info($"Exception occured on begin disconnect, {e}");
             }
         }
 
@@ -192,14 +194,14 @@ namespace WorldServer.Emu.Networking
             }
             catch (Exception e)
             {
-                Debug.Print("Exception occured on end disconnect, {0}", e);
+                Log.Info($"Exception occured on end disconnect, {e}");
             }
             finally
             {
                 connection.CloseConnection();
                 _connectionsPool.Release(connection);
 
-                Debug.Print("Client disconnected.");
+                Log.Debug("Client disconnected.");
             }
         }
     }

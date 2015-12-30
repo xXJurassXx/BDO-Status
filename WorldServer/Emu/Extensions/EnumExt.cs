@@ -1,5 +1,7 @@
 ﻿using Commons.Enums;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Extensions
 {
     public static class EnumExt

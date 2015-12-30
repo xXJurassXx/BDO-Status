@@ -2,7 +2,9 @@
 using Commons.Generics;
 using WorldServer.Emu.Models;
 using WorldServer.Emu.Structures.Geo.Basics;
-
+/*
+   Author:Sagara
+*/
 namespace WorldServer.Emu.Structures.Geo
 {
     public class Area
