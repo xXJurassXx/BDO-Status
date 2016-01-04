@@ -47,14 +47,14 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 
         public override byte[] WritedData()
         {
-            return unk; //that client settings(opened slots, available classes)
+            //that client settings(opened slots, available classes)
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
                 writer.WriteC(4);
                 writer.WriteC(10);
                 writer.WriteC(10);
-                writer.Write("C0C62D0000000000E0930400400D0300400D0300E09304000004080C10141518191C1F202020202020202020202020202020202020202020000000002E000000805101000000000080F403000000000080812B00000000000001010D00000000".ToBytes());
+                writer.Write("C0C62D0000000000E093040000000000E0930400E093040060EA0000000000000004080C10141518191A1C1F2020202020202020202020202020202020202020000000002E000000805101000000000080F403000000000080812B00000000000001010D000096000000010000".ToBytes());
 
                 return stream.ToArray();
             }        

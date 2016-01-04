@@ -3,11 +3,14 @@
 */
 using System;
 using System.Net.Sockets;
+using NLog;
 
 namespace LoginServer.Emu.Networking.Handling
 {
     public abstract class APacketProcessor
     {
+        public static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public void Send(ClientConnection client, bool isCrypted = true)
         {
             var body = WritedData(); //get body data from sended packet

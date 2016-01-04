@@ -14,8 +14,10 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Recv
             using (var reader = new BinaryReader(stream))
             {
                 string token = Encoding.Unicode.GetString(reader.ReadBytes(2048)).Replace("\0", "");
-
-                Core.Act(s => s.AuthProcessor.AuthProcess(client, token));
+                if (!string.IsNullOrEmpty(token))
+                    Core.Act(s => s.AuthProcessor.AuthProcess(client, token));
+                else
+                    Log.Error("Cannot process authorize, unreadable token");                
             }         
         }
     }

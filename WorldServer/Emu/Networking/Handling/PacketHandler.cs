@@ -21,31 +21,39 @@ namespace WorldServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
+            /*KOR Moved*/
             ClientFrames.TryAdd(0x03e9, typeof(RpHeartbeat));
-            ClientFrames.TryAdd(0x0c94, typeof(RpGetToken));
+            ClientFrames.TryAdd(0x0c97, typeof(RpGetToken));
             ClientFrames.TryAdd(0x0be0, typeof(RpCreateCharacter));
             ClientFrames.TryAdd(0x0be3, typeof(RpDeleteCharacter));
-            ClientFrames.TryAdd(0x0cdb, typeof(RpEnterOnWorldRequest));
-            ClientFrames.TryAdd(0x10b0, typeof(RpEnterOnWorldProcess));
+            ClientFrames.TryAdd(0x0ce0, typeof(RpEnterOnWorldRequest));
+            ClientFrames.TryAdd(0x10ce, typeof(RpEnterOnWorldProcess));
+            /**/
+
+
             ClientFrames.TryAdd(0x0bdb, typeof(RpRequestDisconnect));
             ClientFrames.TryAdd(0x0e87, typeof(RpChat));
             ClientFrames.TryAdd(0x0d04, typeof(RpMovement));
 
-            ServerFrames.TryAdd(typeof(SpUnk), 0x0c98);
-            ServerFrames.TryAdd(typeof(SpUnk2), 0x0c74);
-            ServerFrames.TryAdd(typeof(SpCharacterList), 0x0c95);
+            /*KOR Moved*/
+            ServerFrames.TryAdd(typeof(SpUnk), 0x0c9b);
+            ServerFrames.TryAdd(typeof(SpUnk2), 0x0c0a);
+            ServerFrames.TryAdd(typeof(SpCharacterList), 0x0c98);
             ServerFrames.TryAdd(typeof(SpCreateCharacter), 0x0be1);
-            ServerFrames.TryAdd(typeof(SpCreateCharacterError), 0x0be2);
             ServerFrames.TryAdd(typeof(SpDeleteCharacter), 0x0be4);
-            ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcec);
-            ServerFrames.TryAdd(typeof(SpSpawnCharacter), 0x0cdc);
+            ServerFrames.TryAdd(typeof(SpCreateCharacterError), 0x0be2);
+            ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcf1);
+            ServerFrames.TryAdd(typeof(SpSpawnCharacter), 0x0ce1);
+            ServerFrames.TryAdd(typeof(SpInventory), 0x0bf1);
+            ServerFrames.TryAdd(typeof(SpCharacterEquipment), 0x0d61);
+            ServerFrames.TryAdd(typeof(SpUpdateLevel), 0x0f79);
+            /**/
+
+
             ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);
             ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x1085);
             ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
-            ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);
-            ServerFrames.TryAdd(typeof(SpInventory), 0x0bf1); 
-            ServerFrames.TryAdd(typeof(SpCharacterEquipment), 0x0d5a); 
-            ServerFrames.TryAdd(typeof(SpUpdateLevel), 0x0f5f); 
+            ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);                                 
             ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerName), 0x1089); 
             ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerEquipment), 0x1087); 
             ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerFamilyName), 0x1088);

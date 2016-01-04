@@ -13,7 +13,7 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Send
             using (var writer = new BinaryWriter(stream))
             {
                 //karyzir for InCube: i no have more time for analyse it
-                writer.Write("01bc9301".ToBytes());
+                writer.Write("0A6C4401".ToBytes());
 
                 return stream.ToArray();
             }

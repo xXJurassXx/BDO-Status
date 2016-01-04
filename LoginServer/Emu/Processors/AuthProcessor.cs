@@ -72,7 +72,7 @@ namespace LoginServer.Emu.Processors
                     return;
                 }
 
-                var gameToken = RndExt.RandomString(19);
+                var gameToken = RndExt.RandomString(7);
 
                 db.CreateSQLQuery($"UPDATE bd_accounts SET a_game_hash=? WHERE a_id={model.Id} ").SetString(0, gameToken).ExecuteUpdate();
 

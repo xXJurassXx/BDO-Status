@@ -26,7 +26,7 @@ namespace LoginServer
 
             #endregion
 
-            Console.WriteLine("Authors:\n Sagara\n InCube\n");
+            Console.WriteLine("Authors:\n SagaraAkaKaryzir\n InCube\n");
 
             LogManager.Configuration = NLogConfiguration;
 
