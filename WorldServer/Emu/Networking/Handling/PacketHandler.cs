@@ -28,10 +28,9 @@ namespace WorldServer.Emu.Networking.Handling
             ClientFrames.TryAdd(0x0be3, typeof(RpDeleteCharacter));
             ClientFrames.TryAdd(0x0ce0, typeof(RpEnterOnWorldRequest));
             ClientFrames.TryAdd(0x10ce, typeof(RpEnterOnWorldProcess));
+            ClientFrames.TryAdd(0x0bdb, typeof(RpRequestDisconnect));
             /**/
 
-
-            ClientFrames.TryAdd(0x0bdb, typeof(RpRequestDisconnect));
             ClientFrames.TryAdd(0x0e87, typeof(RpChat));
             ClientFrames.TryAdd(0x0d04, typeof(RpMovement));
 
@@ -47,11 +46,10 @@ namespace WorldServer.Emu.Networking.Handling
             ServerFrames.TryAdd(typeof(SpInventory), 0x0bf1);
             ServerFrames.TryAdd(typeof(SpCharacterEquipment), 0x0d61);
             ServerFrames.TryAdd(typeof(SpUpdateLevel), 0x0f79);
+            ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x10a3);
             /**/
 
-
-            ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);
-            ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x1085);
+            ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);            
             ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
             ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);                                 
             ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerName), 0x1089); 

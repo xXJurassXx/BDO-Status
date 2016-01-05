@@ -21,9 +21,9 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
                 writer.Write("ABE7FFFFFFFFFFFFABE7FFFFFFFFFFFF".ToBytes());//static field
                 writer.WriteD(_player.GameSessionId);
                 writer.WriteD(_player.DatabaseCharacterData.Level);              
-                writer.WriteQ(120); 
-                writer.WriteD(0); //2626 percent todo
-                writer.Skip(13);
+                writer.WriteQ(0); 
+                writer.WriteQ(1); //2626 percent todo
+                writer.Skip(9);
                 return stream.ToArray();
             }
         }
