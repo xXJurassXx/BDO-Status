@@ -55,7 +55,10 @@
     <Compile Include="Models\Account\AccountData.cs" />
     <Compile Include="Models\Character\CharacterData.cs" />
     <Compile Include="Models\Character\CharacterItem.cs" />
+    <Compile Include="Models\Realm\WsRealmInfo.cs" />
     <Compile Include="Networking\Cryptography\BdoTransformer.cs" />
+    <Compile Include="Networking\Remoted\IRMILoginService.cs" />
+    <Compile Include="Networking\Remoted\IRMIRealmService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\SingleThreadActor.cs" />
     <Compile Include="UID\Int32UidFactory.cs" />

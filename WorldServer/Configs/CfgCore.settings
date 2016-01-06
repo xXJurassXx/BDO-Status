@@ -26,5 +26,11 @@
     <Setting Name="AccesForAdminCommand" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
+    <Setting Name="RealmName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OpenBdoEMU</Value>
+    </Setting>
+    <Setting Name="ChannelName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Channel - 1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

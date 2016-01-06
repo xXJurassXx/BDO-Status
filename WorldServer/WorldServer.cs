@@ -5,6 +5,7 @@ using Commons.Threading;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using WorldServer.Configs;
 using WorldServer.Emu;
 using WorldServer.Emu.Data;
 using WorldServer.Emu.Networking;
@@ -22,8 +23,8 @@ namespace WorldServer
         {
             #region Console options
             Console.CancelKeyPress += CancelEventHandler;
-
-            Console.Title = "BDO EMU || World server";
+            
+            Console.Title = $"BDO EMU || World server: {CfgCore.Default.RealmName}";
 
             #endregion
 

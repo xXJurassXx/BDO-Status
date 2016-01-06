@@ -37,6 +37,8 @@ namespace WorldServer.Emu.Processors
         /// </summary>
         private static ISessionFactory _gsDbFactory;
 
+        private static object _gsObj;
+
         /// <summary>
         /// Character uids generator
         /// </summary>
@@ -96,6 +98,7 @@ namespace WorldServer.Emu.Processors
             else _itemsUidsFactory = new Int32UidFactory();
 
             _gameSessionFactory = new Int32UidFactory();
+            _gsObj = new object();
         }
 
         public void GetCharacterList(ClientConnection connection)
@@ -416,5 +419,20 @@ namespace WorldServer.Emu.Processors
         {
             return null;
         }
+
+        #region static
+        public static int GetCharactersCount(int accountId)
+        {
+            lock (_gsObj)
+            using (var db = _gsDbFactory.OpenSession())
+                {
+                    int count = db.QueryOver<CharacterData>().Where(p => p.AccountId == accountId).List().Count;
+
+                    return count;
+                }
+        }
+
+        #endregion
+
     }
 }

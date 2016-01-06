@@ -118,5 +118,29 @@ namespace WorldServer.Configs {
                 this["AccesForAdminCommand"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OpenBdoEMU")]
+        public string RealmName {
+            get {
+                return ((string)(this["RealmName"]));
+            }
+            set {
+                this["RealmName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Channel - 1")]
+        public string ChannelName {
+            get {
+                return ((string)(this["ChannelName"]));
+            }
+            set {
+                this["ChannelName"] = value;
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@
 */
 using System;
 using System.Net.Sockets;
+using Commons.Models.Account;
 using Commons.Networking.Cryptography;
 
 namespace LoginServer.Emu.Networking
@@ -16,6 +17,8 @@ namespace LoginServer.Emu.Networking
         public BdoTransformer Session { get; private set; }
 
         public int SequenceId = 37612;
+
+        public AccountData AccountInfo;
 
         public ClientConnection()
         {

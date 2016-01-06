@@ -11,5 +11,11 @@
     <Setting Name="MaxConnections" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
+    <Setting Name="RealmPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">BestPassword</Value>
+    </Setting>
+    <Setting Name="RemotedHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

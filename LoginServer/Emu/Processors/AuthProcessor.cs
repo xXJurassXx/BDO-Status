@@ -3,6 +3,7 @@
 */
 using System;
 using Commons.Models.Account;
+using Commons.Networking.Remoted;
 using Commons.Utils;
 using LoginServer.Emu.Interfaces;
 using LoginServer.Emu.Networking;
@@ -72,12 +73,30 @@ namespace LoginServer.Emu.Processors
                     return;
                 }
 
+                client.AccountInfo = model;
+
                 var gameToken = RndExt.RandomString(7);
 
                 db.CreateSQLQuery($"UPDATE bd_accounts SET a_game_hash=? WHERE a_id={model.Id} ").SetString(0, gameToken).ExecuteUpdate();
 
                 new SpSetHash(gameToken).Send(client);
             }
+        }
+
+        public static int GetCharacterCount(int accountId)
+        {
+            try
+            {
+                var obj = (IRMIRealmService)Activator.GetObject(typeof(IRMIRealmService), $"tcp://{CfgNetwork.Default.RemotedHost}:5546/realm_service");
+
+                return obj.CharacterCount(accountId);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Exception occured\n{ex}");
+
+                return 0;
+            }           
         }
 
         public object OnUnload()

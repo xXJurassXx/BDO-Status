@@ -10,7 +10,7 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Recv
         {
             new SpUnk3().Send(client, false);
             new SpUnk4().Send(client, false);
-            new SpServerlist().Send(client);
+            new SpServerlist(client.AccountInfo).Send(client);
         }
     }
 }

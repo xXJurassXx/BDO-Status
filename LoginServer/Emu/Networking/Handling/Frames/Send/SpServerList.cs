@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
+using Commons.Models.Account;
 using Commons.Utils;
+using LoginServer.Emu.Processors;
 /*
    Author:Sagara
 */
@@ -9,6 +12,12 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Send
 {
     public class SpServerlist : APacketProcessor
     {
+        private readonly AccountData _accInfo;
+        public SpServerlist(AccountData accountInfo)
+        {
+            _accInfo = accountInfo;
+        }
+
         public override byte[] WritedData()
         {
             using (var stream = new MemoryStream())
@@ -18,27 +27,35 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Send
                 writer.WriteD(DateTime.Now.Millisecond);
                 writer.Skip(4);
 
-                writer.WriteH(1); //realms count
+                var realms = NetworkService.WorldServers.Values.ToList();
 
-                writer.WriteH(1); //ChanelId
-                writer.WriteH(1); //realm id
+                writer.WriteH(realms.Count);
 
-                writer.Write(BinaryExt.WriteFixedString(" Channel - 1", Encoding.Unicode, 62));
-                writer.Write(BinaryExt.WriteFixedString(" BDEmulator", Encoding.Unicode, 62));
+                for (int i = 0; i < realms.Count; i++)
+                {
+                    var realm = realms[i];
 
-                writer.Write("CB4B00".ToBytes());
+                    writer.WriteH(realm.ChannelId); 
+                    writer.WriteH(realm.Id);
 
-                writer.Write(BinaryExt.WriteFixedString("127.0.0.1", Encoding.ASCII, 16));
-                writer.WriteH(8889);
+                    writer.Write(BinaryExt.WriteFixedString($" {realm.ChannelName}", Encoding.Unicode, 62));
+                    writer.Write(BinaryExt.WriteFixedString($" {realm.RealmName}", Encoding.Unicode, 62));
 
-                writer.WriteC(1);
-                writer.WriteC(1);
-                writer.WriteC(1);
+                    writer.Write("CB4B00".ToBytes());
 
-                writer.WriteC(0);
-                writer.WriteC(8);
+                    writer.Write(BinaryExt.WriteFixedString(realm.RealmIp, Encoding.ASCII, 16));
+                    writer.WriteH(realm.RealmPort);
 
-                writer.Write("0000FEFFFFFFFFFFFFFFD48D6155000000000000000000000000000000000000".ToBytes());
+                    writer.WriteC(1);
+                    writer.WriteC(1);
+                    writer.WriteC(1);
+
+                    writer.WriteC(AuthProcessor.GetCharacterCount(_accInfo.Id));
+                    writer.WriteC(_accInfo.MaxSlotCount);
+
+                    writer.Write("0000FEFFFFFFFFFFFFFFD48D6155000000000000000000000000000000000000".ToBytes());
+                }
+
                 return stream.ToArray();
             }
         }

@@ -58,5 +58,29 @@ namespace WorldServer.Configs {
                 this["MaxConnections"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BestPassword")]
+        public string RealmPassword {
+            get {
+                return ((string)(this["RealmPassword"]));
+            }
+            set {
+                this["RealmPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string RemotedHost {
+            get {
+                return ((string)(this["RemotedHost"]));
+            }
+            set {
+                this["RemotedHost"] = value;
+            }
+        }
     }
 }
