@@ -17,16 +17,16 @@ namespace LoginServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-            ClientFrames.TryAdd(0x0c78, typeof(RpGetToken));
-            ClientFrames.TryAdd(0x0c7a, typeof(RpUnk));
-            ClientFrames.TryAdd(0x0c7d, typeof(RpUnk2));
+            ClientFrames.TryAdd(0x0c79, typeof(RpGetToken));
+            ClientFrames.TryAdd(0x0c7b, typeof(RpUnk));
+            ClientFrames.TryAdd(0x0c7e, typeof(RpUnk2));
 
-            ServerFrames.TryAdd(typeof(SpSetHash), 0x0c79);
-            ServerFrames.TryAdd(typeof(SpUnk), 0xc7b);
-            ServerFrames.TryAdd(typeof(SpUnk2), 0xc9b);
-            ServerFrames.TryAdd(typeof(SpUnk3), 0x0c7e);
-            ServerFrames.TryAdd(typeof(SpUnk4), 0x0c77);
-            ServerFrames.TryAdd(typeof(SpServerlist), 0x0c80);
+            ServerFrames.TryAdd(typeof(SpSetHash)   , 0x0c7a);
+            ServerFrames.TryAdd(typeof(SpUnk)       , 0xc7c);
+            ServerFrames.TryAdd(typeof(SpUnk2)      , 0xc9c);
+            ServerFrames.TryAdd(typeof(SpUnk3)      , 0x0c7f);
+            ServerFrames.TryAdd(typeof(SpUnk4)      , 0x0c78);
+            ServerFrames.TryAdd(typeof(SpServerlist), 0x0c81);
         }
 
         /// <summary>
