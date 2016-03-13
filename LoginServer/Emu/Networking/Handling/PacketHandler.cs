@@ -17,16 +17,16 @@ namespace LoginServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-            ClientFrames.TryAdd(0x0c79, typeof(RpGetToken));
-            ClientFrames.TryAdd(0x0c7b, typeof(RpUnk));
-            ClientFrames.TryAdd(0x0c7e, typeof(RpUnk2));
+            ClientFrames.TryAdd(0x0c79, typeof(CMSG_GetCreateUserInformationToAuthenticServer));
+            ClientFrames.TryAdd(0x0c7b, typeof(CMSG_LoginUserToAuthenticServer));
+            ClientFrames.TryAdd(0x0c7e, typeof(CMSG_RegisterNickNameToAuthenticServer));
 
-            ServerFrames.TryAdd(typeof(SpSetHash)   , 0x0c7a);
-            ServerFrames.TryAdd(typeof(SpUnk)       , 0xc7c);
-            ServerFrames.TryAdd(typeof(SpUnk2)      , 0xc9c);
-            ServerFrames.TryAdd(typeof(SpUnk3)      , 0x0c7f);
-            ServerFrames.TryAdd(typeof(SpUnk4)      , 0x0c78);
-            ServerFrames.TryAdd(typeof(SpServerlist), 0x0c81);
+            ServerFrames.TryAdd(typeof(SMSG_GetCreateUserInformationToAuthenticServer)   , 0x0c7a);
+            ServerFrames.TryAdd(typeof(SMSG_LoginUserToAuthenticServer)       , 0xc7c);
+            ServerFrames.TryAdd(typeof(SMSG_GetContentServiceInfo)      , 0xc9c);
+            ServerFrames.TryAdd(typeof(SMSG_RegisterNickNameToAuthenticServer)      , 0x0c7f);
+            ServerFrames.TryAdd(typeof(SMSG_FixedCharge)      , 0x0c78);
+            ServerFrames.TryAdd(typeof(SMSG_GetWorldInformations), 0x0c81);
         }
 
         /// <summary>
@@ -42,17 +42,21 @@ namespace LoginServer.Emu.Networking.Handling
             using (var stream = new MemoryStream(packetBody))
             using (var reader = new BinaryReader(stream))
             {
-                var isCrypt = reader.ReadBoolean(); //need just read for move position, we decrypt before
+                reader.ReadBoolean();
                 var sequence = reader.ReadInt16();
                 var opCode = reader.ReadInt16();
                 var body = reader.ReadBytes(packetBody.Length - 5); //without crypt flag, sequence and opCode length
 
                 client.SequenceId = sequence; //install sequence id
 
-                if (ClientFrames.ContainsKey(opCode)) //check, if packet exist
-                    ((APacketProcessor) Activator.CreateInstance(ClientFrames[opCode])).Process(client, body);//process packet  
+                if (ClientFrames.ContainsKey(opCode))
+                {
+                    Console.WriteLine("OpCode: {0:X4} (CMSG => {2})\n{1}", opCode, body.FormatHex(), ClientFrames[opCode].Name);
+                    ((APacketProcessor) Activator.CreateInstance(ClientFrames[opCode])).Process(client, body);
+                }
                 else
-                    Console.WriteLine($"Unknown packet\nOpCode {opCode}\nData:\n {body.FormatHex()}"); //if packet not exist, we cannot proccess hem, just write log
+                    Console.WriteLine($"Unknown packet\nOpCode {opCode}\nData:\n {body.FormatHex()}");
+                        //if packet not exist, we cannot proccess hem, just write log
             }
         }
 

@@ -2,15 +2,15 @@
 using System.Text;
 using Commons.Utils;
 /*
-   Author:Sagara
-   TODO:Pin form, i have idea how do it, but not have free time, i think, that shit use static field array - (1234567890) for example
+   Author:Sagara, InCube
 */
 namespace LoginServer.Emu.Networking.Handling.Frames.Send
 {
-    public class SpSetHash : APacketProcessor
+    // ReSharper disable once InconsistentNaming
+    public class SMSG_GetCreateUserInformationToAuthenticServer : APacketProcessor
     {
         private readonly string _hash;
-        public SpSetHash(string hash)
+        public SMSG_GetCreateUserInformationToAuthenticServer(string hash)
         {
             _hash = hash;
         }

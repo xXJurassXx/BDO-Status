@@ -3,6 +3,7 @@
 */
 using System;
 using System.Net.Sockets;
+using Commons.Utils;
 using NLog;
 
 namespace LoginServer.Emu.Networking.Handling
@@ -24,6 +25,7 @@ namespace LoginServer.Emu.Networking.Handling
                 packet[2] = 1;
 
             var opCode = PacketHandler.GetOpCode(GetType()); //get opcode from handler
+            Console.WriteLine("Opcode: {0:X4} (SMSG => {2})\n{1}", opCode, body.FormatHex(), GetType().Name);
 
             Buffer.BlockCopy(BitConverter.GetBytes(opCode), 0, packet, 5, 2); //copy opcode in buffer
             Buffer.BlockCopy(body, 0, packet, 7, body.Length); //copy packet body in buffer

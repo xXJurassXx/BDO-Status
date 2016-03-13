@@ -1,12 +1,13 @@
 ﻿/*
-   Author:Sagara
+   Author:Sagara, InCube
 */
 using System.IO;
 using System.Text;
 
 namespace LoginServer.Emu.Networking.Handling.Frames.Recv
 {
-    public class RpGetToken : APacketProcessor
+    // ReSharper disable once InconsistentNaming
+    public class CMSG_GetCreateUserInformationToAuthenticServer : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {

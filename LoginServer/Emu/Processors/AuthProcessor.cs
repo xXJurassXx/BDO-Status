@@ -79,7 +79,7 @@ namespace LoginServer.Emu.Processors
 
                 db.CreateSQLQuery($"UPDATE bd_accounts SET a_game_hash=? WHERE a_id={model.Id} ").SetString(0, gameToken).ExecuteUpdate();
 
-                new SpSetHash(gameToken).Send(client);
+                new SMSG_GetCreateUserInformationToAuthenticServer(gameToken).Send(client);
             }
         }
 

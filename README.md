@@ -3,10 +3,20 @@ Desert Project is an Open-Source emulator for online MMORPG "Black Desert Online
 
 ```
 Supported regions: EU and NA
-Supported client: v754 (KR), moving to CBT-2 soon. *Confirmed login-server partly working on CBT-2
+Supported client: EU and NA all clients
 Project status: On Hold
 ```
 
-**Disclaimer** If you get into any trouble with Daum Games, Pearl Abyss or GameNET(RU), we are not responsible for any actions they will take against you.
+Disclaimer:
+```
+This project is created for educational purposes.
+All use for private-servers, destroying the nature of the game is illegal.
+```
 
-**Terms of Use** You may not create any type of software that will damage "Black Desert Online" MMORPG. You may only use this project for playing locally, remote servers are illegal.
+Terms of Use
+```
+You cannot create software that damages "Black Desert Online" MMORPG.
+You cannot use this software to advertise your gold scamming services.
+
+If any of these rules are void, you will be asked to remove your project immediately.
+```
