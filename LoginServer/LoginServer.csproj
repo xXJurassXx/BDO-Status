@@ -84,6 +84,7 @@
     <Compile Include="Emu\Networking\Handling\APacketProcessor.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CmsgGetCreateUserInformationToAuthenticServer.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_LoginUserToAuthenticServer.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_Heartbeat.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_RegisterNickNameToAuthenticServer.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_GetWorldInformations.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_GetCreateUserInformationToAuthenticServer.cs" />

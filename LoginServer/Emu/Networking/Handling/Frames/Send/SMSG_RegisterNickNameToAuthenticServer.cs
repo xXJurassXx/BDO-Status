@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Commons.Utils;
 /*
-   Author:Sagara, InCube
+   Author: Sagara, InCube, RBW
 */
 namespace LoginServer.Emu.Networking.Handling.Frames.Send
 {
@@ -13,8 +13,8 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Send
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                //karyzir for InCube: i no have more time for analyse it
-                writer.Write("0A6C4401".ToBytes());
+				/* d */
+                writer.Write((int)34829344); // not static system message - change each login try - could be a time
 
                 return stream.ToArray();
             }

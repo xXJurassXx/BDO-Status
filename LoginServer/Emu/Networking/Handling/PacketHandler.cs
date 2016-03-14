@@ -1,5 +1,5 @@
 ﻿/*
-   Author:Sagara
+   Author: Sagara, RBW
 */
 using System;
 using System.Collections.Concurrent;
@@ -17,16 +17,17 @@ namespace LoginServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-            ClientFrames.TryAdd(0x0c79, typeof(CMSG_GetCreateUserInformationToAuthenticServer));
-            ClientFrames.TryAdd(0x0c7b, typeof(CMSG_LoginUserToAuthenticServer));
-            ClientFrames.TryAdd(0x0c7e, typeof(CMSG_RegisterNickNameToAuthenticServer));
+            ClientFrames.TryAdd(0x03E9, typeof(CMSG_Heartbeat));
+            ClientFrames.TryAdd(0x0C79, typeof(CMSG_GetCreateUserInformationToAuthenticServer));
+            ClientFrames.TryAdd(0x0C7B, typeof(CMSG_LoginUserToAuthenticServer));
+            ClientFrames.TryAdd(0x0C7E, typeof(CMSG_RegisterNickNameToAuthenticServer));
 
-            ServerFrames.TryAdd(typeof(SMSG_GetCreateUserInformationToAuthenticServer)   , 0x0c7a);
-            ServerFrames.TryAdd(typeof(SMSG_LoginUserToAuthenticServer)       , 0xc7c);
-            ServerFrames.TryAdd(typeof(SMSG_GetContentServiceInfo)      , 0xc9c);
-            ServerFrames.TryAdd(typeof(SMSG_RegisterNickNameToAuthenticServer)      , 0x0c7f);
-            ServerFrames.TryAdd(typeof(SMSG_FixedCharge)      , 0x0c78);
-            ServerFrames.TryAdd(typeof(SMSG_GetWorldInformations), 0x0c81);
+            ServerFrames.TryAdd(typeof(SMSG_GetCreateUserInformationToAuthenticServer), 0x0C7A);
+            ServerFrames.TryAdd(typeof(SMSG_LoginUserToAuthenticServer), 0xC7C);
+            ServerFrames.TryAdd(typeof(SMSG_GetContentServiceInfo), 0xC9C);
+            ServerFrames.TryAdd(typeof(SMSG_RegisterNickNameToAuthenticServer), 0x0C7F);
+            ServerFrames.TryAdd(typeof(SMSG_FixedCharge), 0x0C78);
+            ServerFrames.TryAdd(typeof(SMSG_GetWorldInformations), 0x0C81);
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace LoginServer.Emu.Networking.Handling
         /// <param name="packetBody">packet data</param>
         public static void Process(ClientConnection client, byte[] packetBody)
         {
-            if (packetBody[0] == 1) //if crypto flag is 1, decrypt
+            if (packetBody[0] == 1) // if crypto flag is 1, decrypt
                 client.Session.Transform(ref packetBody);
 
             using (var stream = new MemoryStream(packetBody))
@@ -45,9 +46,9 @@ namespace LoginServer.Emu.Networking.Handling
                 reader.ReadBoolean();
                 var sequence = reader.ReadInt16();
                 var opCode = reader.ReadInt16();
-                var body = reader.ReadBytes(packetBody.Length - 5); //without crypt flag, sequence and opCode length
+                var body = reader.ReadBytes(packetBody.Length - 5); // without crypt flag, sequence and opCode length
 
-                client.SequenceId = sequence; //install sequence id
+                client.SequenceId = sequence; // install sequence id
 
                 if (ClientFrames.ContainsKey(opCode))
                 {
@@ -56,7 +57,7 @@ namespace LoginServer.Emu.Networking.Handling
                 }
                 else
                     Console.WriteLine($"Unknown packet\nOpCode {opCode}\nData:\n {body.FormatHex()}");
-                        //if packet not exist, we cannot proccess hem, just write log
+                        // if packet not exist, we cannot proccess hem, just write log
             }
         }
 

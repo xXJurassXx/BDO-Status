@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Commons.Utils;
 /*
-   Author:Sagara, InCube
+   Author: Sagara, InCube, RBW
 */
 namespace LoginServer.Emu.Networking.Handling.Frames.Send
 {
@@ -13,8 +13,9 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Send
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                //karyzir for InCube: i no have more time for analyse it
-                writer.Write("FEFFFFFFFFFFFFFF00".ToBytes());
+				/* Q,c */
+                writer.Write((long)-2); // premium timer - default -2
+				writer.Write((byte)0); // unk boolean [always 0 if not premium user]
 
                 return stream.ToArray();
             }
