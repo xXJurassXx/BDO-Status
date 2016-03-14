@@ -2,8 +2,6 @@
 /*
    Author: RBW
 */
-using System.IO;
-using System.Text;
 
 namespace LoginServer.Emu.Networking.Handling.Frames.Recv
 {

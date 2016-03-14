@@ -14,7 +14,7 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Recv
             using (var stream = new MemoryStream(data))
             using (var reader = new BinaryReader(stream))
             {
-				/* S(2048),d,d,d */
+				/* S(2050),d,d,d */
                 string token = Encoding.Unicode.GetString(reader.ReadBytes(2050)).Replace("\0", ""); // auth token
 				var cookie = reader.ReadInt32(); // login session cookie id
 				var clientVersion = reader.ReadInt32(); // static 51, not used anymore
