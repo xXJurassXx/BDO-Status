@@ -3,7 +3,7 @@ using System.Text;
 using Commons.Enums;
 using Commons.Utils;
 /**
-* Author: InCube, Sagara
+* Author: InCube, Sagara, RBW
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
@@ -27,13 +27,14 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             {
                 using (var writer = new BinaryWriter(stream))
                 {
-                    writer.WriteH(_chatType.GetHashCode());
-                    writer.WriteD(_sessionId);
+                    writer.Write((byte)_chatType.GetHashCode());
+					writer.Write((byte)1);
+					writer.Write((int)_sessionId);
                     writer.Write(BinaryExt.WriteFixedString(_characterName, Encoding.Unicode, 62));
-                    writer.WriteH(1);
-                    writer.WriteH(0);
-                    writer.Write(Encoding.Unicode.GetBytes(_message));
-                    writer.WriteH(0);
+                    writer.Write((byte)1);
+                    writer.Write((byte)0);
+					writer.Write((byte)1);
+					writer.Write(Encoding.Unicode.GetBytes(_message));
                 }
                 return stream.ToArray();
             }

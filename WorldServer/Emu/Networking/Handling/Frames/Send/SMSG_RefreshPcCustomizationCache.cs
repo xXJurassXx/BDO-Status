@@ -3,15 +3,15 @@ using System.Text;
 using Commons.Utils;
 using WorldServer.Emu.Models.Creature.Player;
 /*
-   Author:Sagara
+   Author: Sagara. RBW
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
-    class SpCharacterCustimozationData : APacketProcessor
+    class SMSG_RefreshPcCustomizationCache : APacketProcessor
     {
         private readonly Player _character;
 
-        public SpCharacterCustimozationData(Player character)
+        public SMSG_RefreshPcCustomizationCache(Player character)
         {
             _character = character;
         }

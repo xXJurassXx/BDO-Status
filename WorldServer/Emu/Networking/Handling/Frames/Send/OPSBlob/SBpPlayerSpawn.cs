@@ -33,23 +33,23 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob
             SendPlayerEquipment();
             SendSpawnPlayerData();
 
-            new SpCharacterCustimozationData(_player).Send(_connection);
-            new SpCharacterCustomizationResponse(_player).Send(_connection);
+            new SMSG_RefreshPcCustomizationCache(_player).Send(_connection);
+            new SMSG_RefreshPcLearnedActiveSkillsCache(_player).Send(_connection);
         }
 
         public void SendPlayerName()
         {
-            new SpSetPlayerName(_player).Send(_connection);
+            new SMSG_RefreshPcBasicCache(_player).Send(_connection);
         }
 
         public void SendPlayerEquipment()
         {
-            new SpSetPlayerEquipment(_player).Send(_connection);
+            new SMSG_RefreshPcEquipSlotCache(_player).Send(_connection);
         }
 
         public void SendFamilyName()
         {
-            new SpSetPlayerFamilyName(_player, _spawnedConnection.Account).Send(_connection);
+            new SMSG_RefreshUserBasicCache(_player, _spawnedConnection.Account).Send(_connection);
         }
 
         public void SendSpawnPlayerData()
@@ -57,11 +57,11 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob
             new SpSpawnPlayer(_player).Send(_connection);
         }
 
-        public class SpSetPlayerName : APacketProcessor
+        public class SMSG_RefreshPcBasicCache : APacketProcessor
         {
             private readonly Player _player;
 
-            public SpSetPlayerName(Player player)
+            public SMSG_RefreshPcBasicCache(Player player)
             {
                 _player = player;
             }
@@ -71,28 +71,30 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob
                 using (var stream = new MemoryStream())
                 using (var writer = new BinaryWriter(stream))
                 {
-                    writer.WriteD(_player.GameSessionId);                   
-                    writer.WriteQ(_player.Uid);
-                    writer.WriteD(1); //unk, type maybe or flag
+					// SMSG_RefreshPcBasicCache
+					
+                    writer.Write((int)_player.GameSessionId);                   
+                    writer.Write((long)_player.Uid);
+                    writer.Write((int)1); // incremental
                     writer.Write(BinaryExt.WriteFixedString(_player.DatabaseCharacterData.CharacterName, Encoding.Unicode, 62));
-                    writer.WriteC(_player.DatabaseCharacterData.AppearancePresets[0]); //face
-                    writer.WriteC(_player.DatabaseCharacterData.AppearancePresets[1]); //hair
-                    writer.WriteC(_player.DatabaseCharacterData.AppearancePresets[2]); //goatee
-                    writer.WriteC(_player.DatabaseCharacterData.AppearancePresets[3]); //mustache
-                    writer.WriteC(_player.DatabaseCharacterData.AppearancePresets[4]); //sideburns
-                    writer.Write("05".ToBytes()); //020104070705 unk
+                    writer.Write((byte)_player.DatabaseCharacterData.AppearancePresets[0]); // face
+                    writer.Write((byte)_player.DatabaseCharacterData.AppearancePresets[1]); // hair
+                    writer.Write((byte)_player.DatabaseCharacterData.AppearancePresets[2]); // goatee
+                    writer.Write((byte)_player.DatabaseCharacterData.AppearancePresets[3]); // mustache
+                    writer.Write((byte)_player.DatabaseCharacterData.AppearancePresets[4]); // sideburns
+                    writer.Write((byte)5); // TODO: eyebrows
 
                     return stream.ToArray();
                 }
             }
         }
 
-        public class SpSetPlayerFamilyName : APacketProcessor
+        public class SMSG_RefreshUserBasicCache : APacketProcessor
         {
             private readonly Player _player;
             private readonly AccountData _accountInfo;
 
-            public SpSetPlayerFamilyName(Player player, AccountData accountInfo)
+            public SMSG_RefreshUserBasicCache(Player player, AccountData accountInfo)
             {
                 _player = player;
                 _accountInfo = accountInfo;
@@ -103,22 +105,24 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob
                 using (var stream = new MemoryStream())
                 using (var writer = new BinaryWriter(stream))
                 {
-                    writer.Write(_player.GameSessionId);
-                    writer.Write("2873000000000000".ToBytes()); //unk
-                    writer.WriteD(1);
+					// SMSG_RefreshUserBasicCache
+
+					writer.Write((int)_player.GameSessionId);
+                    writer.Write((long)_player.DatabaseCharacterData.AccountId);
+                    writer.Write((int)1); // incremental
                     writer.Write(BinaryExt.WriteFixedString(_accountInfo.FamilyName, Encoding.Unicode, 62));
-                    writer.Skip(402);
+                    writer.Write(new byte [402]); // possibly text string
 
                     return stream.ToArray();
                 }
             }
         }
 
-        public class SpSetPlayerEquipment : APacketProcessor
+        public class SMSG_RefreshPcEquipSlotCache : APacketProcessor
         {
             private readonly Player _player;
 
-            public SpSetPlayerEquipment(Player player)
+            public SMSG_RefreshPcEquipSlotCache(Player player)
             {
                 _player = player;
             }
@@ -128,11 +132,13 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob
                 using (var stream = new MemoryStream())
                 using (var writer = new BinaryWriter(stream))
                 {
-                    writer.WriteD(_player.GameSessionId);
-                    writer.WriteQ(_player.Uid);
-                    writer.WriteD(3); //unk 
-                    writer.Write("00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +  //Weapon 
-                                 "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +  //Second weapon
+					// SMSG_RefreshPcEquipSlotCache
+
+					writer.Write((int)_player.GameSessionId);
+                    writer.Write((long)_player.Uid);
+                    writer.Write((int)1); // incremental 
+					/* h,h,Q,h,h*12,c */
+                    writer.Write("00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" + 
                                  "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +
                                  "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +
                                  "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +
@@ -149,7 +155,8 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob
                                  "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +
                                  "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +
                                  "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +
-                                 "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF".ToBytes()); //TODO
+                                 "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" +
+                                 "00000000FEFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF".ToBytes());
 
                     return stream.ToArray();
                 }

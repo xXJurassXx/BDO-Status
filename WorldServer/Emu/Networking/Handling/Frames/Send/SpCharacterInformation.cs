@@ -4,7 +4,7 @@ using Commons.Models.Character;
 using Commons.Utils;
 using WorldServer.Emu.Extensions;
 /*
-   Author:Sagara
+   Author: Sagara
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {

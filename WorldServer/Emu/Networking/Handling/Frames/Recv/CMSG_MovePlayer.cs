@@ -63,6 +63,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
                     Cosinus = cosinus, Sinus = sinus, Heading = (short) heading
                 }, new Position(new Vector3(0,0,0)), (short) heading, 120, 1);
 
+				/* TODO: FIX ME! */
                 Core.Act(s => s.WorldProcessor.ObjectMoved(client.ActivePlayer, movementAcion));
 
                 //Log.Debug("\n----------------\n" +

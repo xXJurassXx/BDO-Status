@@ -6,11 +6,11 @@ using WorldServer.Emu.Models.Creature.Player;
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
-    public class SpInventory : APacketProcessor
+    public class SMSG_AddItemToInventory : APacketProcessor
     {
         private readonly Player _player;
 
-        public SpInventory(Player player)
+        public SMSG_AddItemToInventory(Player player)
         {
             _player = player;
         }

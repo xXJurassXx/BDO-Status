@@ -22,11 +22,11 @@ namespace WorldServer.Scripts.AdminCommands
             };
 
             new SBpPlayerSpawn.SpSpawnPlayer(player).Send(connection);
-            new SBpPlayerSpawn.SpSetPlayerName(player).Send(connection);
-            new SBpPlayerSpawn.SpSetPlayerFamilyName(player, connection.Account).Send(connection);
-            new SBpPlayerSpawn.SpSetPlayerEquipment(player).Send(connection);
-            new SpCharacterCustimozationData(player).Send(connection);
-            new SpCharacterCustomizationResponse(player).Send(connection);            
+            new SBpPlayerSpawn.SMSG_RefreshPcBasicCache(player).Send(connection);
+            new SBpPlayerSpawn.SMSG_RefreshUserBasicCache(player, connection.Account).Send(connection);
+            new SBpPlayerSpawn.SMSG_RefreshPcEquipSlotCache(player).Send(connection);
+            new SMSG_RefreshPcCustomizationCache(player).Send(connection);
+            new SMSG_RefreshPcLearnedActiveSkillsCache(player).Send(connection);            
         }
     }
 }

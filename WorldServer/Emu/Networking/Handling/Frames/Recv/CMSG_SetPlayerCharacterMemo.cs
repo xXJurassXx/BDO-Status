@@ -1,24 +1,21 @@
-﻿/**
- * Author: InCube, Sagara, RBW
+﻿/*
+   Author: RBW
 */
 using System.IO;
 using System.Text;
 
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
-    public class CMSG_BeginDelayedLogout : APacketProcessor
+    class CMSG_SetPlayerCharacterMemo : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {
 			using (var stream = new MemoryStream(data))
 			using (var reader = new BinaryReader(stream))
 			{
-				var result = reader.ReadByte();
+				/* TODO */
 			}
-
-            Core.Act(s => s.CharacterProcessor.Requests.CloseClientRequest(client));
-
-			Log.Info("Client Begin Delayed Logout Resquested From Game Session!");
+			Log.Info("Client Set Player Character Memo Resquested From Game Session!");
 		}
     }
 }

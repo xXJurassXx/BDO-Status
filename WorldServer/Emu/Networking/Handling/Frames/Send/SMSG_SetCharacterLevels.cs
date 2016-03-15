@@ -6,10 +6,10 @@ using WorldServer.Emu.Models.Creature.Player;
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
-    class SpUpdateLevel : APacketProcessor
+    class SMSG_SetCharacterLevels : APacketProcessor
     {
         private readonly Player _player;
-        public SpUpdateLevel(Player player)
+        public SMSG_SetCharacterLevels(Player player)
         {
             _player = player;
         }

@@ -38,12 +38,22 @@ namespace WorldServer.Emu.Networking.Handling
 			ClientFrames.TryAdd(0x10D3, typeof(CMSG_ReadJournal));
 			ClientFrames.TryAdd(0x0DAA, typeof(CMSG_ListSiegeGuild));
 			ClientFrames.TryAdd(0x0F62, typeof(CMSG_GetWebBenefit));
-			ClientFrames.TryAdd(0x0CE0, typeof(CMSG_PaymentPasswordRegister));
 			ClientFrames.TryAdd(0x0CE0, typeof(CMSG_SetReadyToPlay));
+			ClientFrames.TryAdd(0x10D7, typeof(CMSG_WriteJournalPlayCutScene));
+			ClientFrames.TryAdd(0x0CE0, typeof(CMSG_PaymentPasswordRegister));
 
 			/* CLIENT IN GAME STATE */
 			ClientFrames.TryAdd(0x0EA5, typeof(CMSG_Chat));
 			ClientFrames.TryAdd(0x0BCA, typeof(CMSG_MovePlayer));
+			ClientFrames.TryAdd(0x0BCF, typeof(CMSG_PlayerDirection));
+			ClientFrames.TryAdd(0x0D0C, typeof(CMSG_DoAction));
+			ClientFrames.TryAdd(0x0D05, typeof(CMSG_StartAction));
+
+			/* CLIENT LOGOUT STATE */
+			ClientFrames.TryAdd(0x0CF0, typeof(CMSG_ListWaitingCountOfMyCharacter));
+			ClientFrames.TryAdd(0x10D8, typeof(CMSG_RecentJournal));
+			ClientFrames.TryAdd(0x0CFC, typeof(CMSG_ListEnchantFailCountOfMyCharacter));
+			ClientFrames.TryAdd(0x0CF9, typeof(CMSG_SetPlayerCharacterMemo));
 			ClientFrames.TryAdd(0x0BDB, typeof(CMSG_BeginDelayedLogout));
 			ClientFrames.TryAdd(0x0BD8, typeof(CMSG_CancelDelayedLogout));
 			ClientFrames.TryAdd(0x0BD9, typeof(CMSG_EndDelayedLogout));
@@ -59,31 +69,38 @@ namespace WorldServer.Emu.Networking.Handling
 			ServerFrames.TryAdd(typeof(SMSG_ExitFieldServerToServerSelection), 0x0C9B);
 
 			/* SERVER ENTER WORLD STATE */
+			ServerFrames.TryAdd(typeof(SMSG_CancelFieldEnterWaiting), 0x0CF4);
+			ServerFrames.TryAdd(typeof(SMSG_SetGameTime), 0x0D52);
+			ServerFrames.TryAdd(typeof(SMSG_EnterPlayerCharacterToField), 0x0CE4);
+			ServerFrames.TryAdd(typeof(SMSG_LoadField), 0x0CFE);
+			ServerFrames.TryAdd(typeof(SMSG_AddPlayers), 0x0BB9);
+			ServerFrames.TryAdd(typeof(SMSG_PlayerLogOnOff), 0x0D45);
+			ServerFrames.TryAdd(typeof(SMSG_LoadFieldComplete), 0x0CFF);
+			ServerFrames.TryAdd(typeof(SMSG_EnterPlayerCharacterToFieldComplete), 0x0CE5);
 
 			/* SERVER IN GAME STATE */
-			ServerFrames.TryAdd(typeof(SMSG_Chat), 0x0EAC); // todo: update
+			ServerFrames.TryAdd(typeof(SMSG_Chat), 0x0EAC);
+			ServerFrames.TryAdd(typeof(SMSG_GetAllEquipSlot), 0x0D65);
+			ServerFrames.TryAdd(typeof(SMSG_AddItemToInventory), 0x0BF1);
+			ServerFrames.TryAdd(typeof(SMSG_SetCharacterLevels), 0x0F7E);
+			ServerFrames.TryAdd(typeof(SMSG_RefreshPcCustomizationCache), 0x10A8);
+			ServerFrames.TryAdd(typeof(SMSG_RefreshPcLearnedActiveSkillsCache), 0x10A9);
+			ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SMSG_RefreshPcEquipSlotCache), 0x10AA);
+			ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SMSG_RefreshUserBasicCache), 0x10AB);
+			ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SMSG_RefreshPcBasicCache), 0x10AC);
 
-			/* TODO: CLEANUP BELOW */
-			ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcf2);
-            ServerFrames.TryAdd(typeof(SpSpawnCharacter), 0x0ce2);
-            ServerFrames.TryAdd(typeof(SpInventory), 0x0bf2);
-            ServerFrames.TryAdd(typeof(SpCharacterEquipment), 0x0d62);
-            ServerFrames.TryAdd(typeof(SpUpdateLevel), 0x0f80);
-            ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x10a4);
-            ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);            
-            ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);                               
-            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerName), 0x1089); 
-            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerEquipment), 0x1087); 
-            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerFamilyName), 0x1088);
-            ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSpawnPlayer), 0x0bb9);
-        }
+			/* TODO: CLEANUP BELOW - ALL OPCODES OUTDATED */
+			//ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcf2);
+			//ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);
+			//ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSpawnPlayer), 0x0BB9); // SMSG_AddPlayers
+		}
 
-        /// <summary>
-        /// Handle packet
-        /// </summary>
-        /// <param name="client">Client connection</param>
-        /// <param name="packetBody">packet data</param>
-        public static void Process(ClientConnection client, byte[] packetBody)
+		/// <summary>
+		/// Handle packet
+		/// </summary>
+		/// <param name="client">Client connection</param>
+		/// <param name="packetBody">packet data</param>
+		public static void Process(ClientConnection client, byte[] packetBody)
         {
             if (packetBody[0] == 1) //if crypto flag is 1, decrypt
                 client.Session.Transform(ref packetBody);

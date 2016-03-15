@@ -4,15 +4,15 @@ using Commons.Utils;
 using WorldServer.Emu.Models.Creature.Player;
 using WorldServer.Emu.Models.Storages;
 /*
-   Author:Sagara
+   Author: Sagara, RBW
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
-    public class SpCharacterEquipment : APacketProcessor
+    public class SMSG_GetAllEquipSlot : APacketProcessor
     {
         private readonly Player _player;
         private BinaryWriter _writer;
-        public SpCharacterEquipment(Player player)
+        public SMSG_GetAllEquipSlot(Player player)
         {
             _player = player;
         }
@@ -64,19 +64,27 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
                 return stream.ToArray();
             }
         }
-        //0000000012000000f10bb8740000000059e7994b0f00000070808b0204000000000000ffffffffffffffff000000000000e1f505000000002a8000000000000000000000000000000000000000000000000000000000000000000000000000
+        
         protected void WriteEquipedItem(EquipmentStorage storage, EquipSlot slot)
         {
             if (storage.IsEquip(slot))
             {
                 var item = storage.GetItemByEquipSlot(slot);
-                _writer.WriteH(item.ItemId);
-                _writer.WriteH(0); //Enchant
-                _writer.WriteQ(1); //Cannot trade
-                _writer.WriteB("FFFFFFFFFFFFFFFF0000000000000000000100" +
-                               "3200" + //current health
-                               "3200" + //max health
-                               "A72CE56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000000000000000000000000000");
+
+                _writer.Write((short)item.ItemId); // id
+                _writer.Write((short)0); // enchant
+                _writer.Write((long)1); // count
+				_writer.Write((long)-1); // expiration
+				_writer.Write((byte)0); // unk
+				_writer.Write((long)0); // price maybe
+				_writer.Write((short)1); // unk
+				_writer.Write((short)50); // cur endurance
+				_writer.Write((short)50); // max endurance
+				_writer.Write((long)1); // obj id
+				_writer.WriteB("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"); // dye data - 12 * 2
+				_writer.Write((int)0); // unk
+				_writer.Write((byte)0); // unk
+				_writer.WriteB("000000000000000000000000000000000000000000000000"); // jewel/crystal data - 6 * 4
             }
             else //GAG
                 _writer.WriteB("0000000000C0C200000000000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFF00001010441501000000FEFFFFFFFFFFFFFF00000000000000005F978756000000001010441501000000A96BD0ED85BE3F01000000");
