@@ -150,13 +150,13 @@ namespace WorldServer.Emu.Processors
                 switch ((ChatType)parameters[0])
                 {
                     case ChatType.Public:
-                        client.ActivePlayer.VisibleAi.NotifyObjectsThatSeeMe<Player>(s => new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(s.Connection));
-                        new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, ChatType.Public).Send(client);
+                        client.ActivePlayer.VisibleAi.NotifyObjectsThatSeeMe<Player>(s => new SMSG_Chat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(s.Connection));
+                        new SMSG_Chat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, ChatType.Public).Send(client);
                         break;
 
                     case ChatType.World:
                         foreach (var receiver in _onlinePlayers.Values)
-                            new SpChat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(receiver.Connection);
+                            new SMSG_Chat((string)parameters[1], client.ActivePlayer.GameSessionId, client.ActivePlayer.DatabaseCharacterData.CharacterName, (ChatType)parameters[0]).Send(receiver.Connection);
                         break;
                 }
 

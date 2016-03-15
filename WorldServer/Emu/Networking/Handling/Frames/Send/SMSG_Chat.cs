@@ -7,14 +7,14 @@ using Commons.Utils;
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
-    class SpChat : APacketProcessor
+    class SMSG_Chat : APacketProcessor
     {
         private readonly int _sessionId;
         private readonly string _message;
         private readonly string _characterName;
         private readonly ChatType _chatType;
 
-        public SpChat(string message, int sessionId, string characterName, ChatType chatType)
+        public SMSG_Chat(string message, int sessionId, string characterName, ChatType chatType)
         {
             _message = message;
             _sessionId = sessionId;

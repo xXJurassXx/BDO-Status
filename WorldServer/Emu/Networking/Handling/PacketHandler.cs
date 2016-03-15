@@ -7,7 +7,7 @@ using WorldServer.Emu.Networking.Handling.Frames.Recv;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
 using WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob;
 /*
-   Author:Sagara
+   Author: Sagara, RBW
 */
 namespace WorldServer.Emu.Networking.Handling
 {
@@ -21,37 +21,57 @@ namespace WorldServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-            /*KOR Moved*/
-            ClientFrames.TryAdd(0x03e9, typeof(RpHeartbeat));
-            ClientFrames.TryAdd(0x0c98, typeof(RpGetToken));
-            ClientFrames.TryAdd(0x0be1, typeof(RpCreateCharacter));
-            ClientFrames.TryAdd(0x0be4, typeof(RpDeleteCharacter));
-            ClientFrames.TryAdd(0x0ce1, typeof(RpEnterOnWorldRequest));
-            ClientFrames.TryAdd(0x10cf, typeof(RpEnterOnWorldProcess));
-            ClientFrames.TryAdd(0x0bdc, typeof(RpRequestDisconnect));
-            /**/
+			/* CLIENT ANY STATES */
+            ClientFrames.TryAdd(0x03E9, typeof(CMSG_Heartbeat));
+			ClientFrames.TryAdd(0x0FB2, typeof(CMSG_GetInstallationList));
 
-            ClientFrames.TryAdd(0x0e87, typeof(RpChat));
-            ClientFrames.TryAdd(0x0d04, typeof(RpMovement));
+			/* CLIENT LOBBY STATE */
+			ClientFrames.TryAdd(0x0C98, typeof(CMSG_LoginUserToFieldServer));
+			ClientFrames.TryAdd(0x0BE0, typeof(CMSG_CreateCharacterToField));
+            ClientFrames.TryAdd(0x0BE3, typeof(CMSG_RemoveCharacterFromField));
+			ClientFrames.TryAdd(0x0BDD, typeof(CMSG_RemoveCancelCharacterFromField));
+			ClientFrames.TryAdd(0x0CE3, typeof(CMSG_EnterPlayerCharacterToField));
+			ClientFrames.TryAdd(0x0C9A, typeof(CMSG_ExitFieldServerToServerSelection));
 
-            /*KOR Moved*/
-            ServerFrames.TryAdd(typeof(SpUnk), 0x0c9c);
-            ServerFrames.TryAdd(typeof(SpUnk2), 0x0c0b);
-            ServerFrames.TryAdd(typeof(SpCharacterList), 0x0c99);
-            ServerFrames.TryAdd(typeof(SpCreateCharacter), 0x0be2);
-            ServerFrames.TryAdd(typeof(SpDeleteCharacter), 0x0be5);
-            ServerFrames.TryAdd(typeof(SpCreateCharacterError), 0x0be3);
-            ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcf2);
+			/* CLIENT ENTER WORLD STATE */
+			ClientFrames.TryAdd(0x10A7, typeof(CMSG_RefreshCacheData));
+			ClientFrames.TryAdd(0x10D3, typeof(CMSG_ReadJournal));
+			ClientFrames.TryAdd(0x0DAA, typeof(CMSG_ListSiegeGuild));
+			ClientFrames.TryAdd(0x0F62, typeof(CMSG_GetWebBenefit));
+			ClientFrames.TryAdd(0x0CE0, typeof(CMSG_PaymentPasswordRegister));
+			ClientFrames.TryAdd(0x0CE0, typeof(CMSG_SetReadyToPlay));
+
+			/* CLIENT IN GAME STATE */
+			ClientFrames.TryAdd(0x0EA5, typeof(CMSG_Chat));
+			ClientFrames.TryAdd(0x0BCA, typeof(CMSG_MovePlayer));
+			ClientFrames.TryAdd(0x0BDB, typeof(CMSG_BeginDelayedLogout));
+			ClientFrames.TryAdd(0x0BD8, typeof(CMSG_CancelDelayedLogout));
+			ClientFrames.TryAdd(0x0BD9, typeof(CMSG_EndDelayedLogout));
+
+			/* SERVER LOBBY STATE */
+			ServerFrames.TryAdd(typeof(SMSG_GetContentServiceInfo), 0x0C9C);
+			ServerFrames.TryAdd(typeof(SMSG_ChargeUser), 0x0C0A);
+			ServerFrames.TryAdd(typeof(SMSG_LoginUserToFieldServer), 0x0C99);
+			ServerFrames.TryAdd(typeof(SMSG_FixedCharge), 0x0C78);
+			ServerFrames.TryAdd(typeof(SMSG_CreateCharacterToField), 0x0BE1);
+			ServerFrames.TryAdd(typeof(SMSG_RemoveCharacterFromField), 0x0BE4);
+			ServerFrames.TryAdd(typeof(SMSG_CreateCharacterToFieldNak), 0x0BE2);
+			ServerFrames.TryAdd(typeof(SMSG_ExitFieldServerToServerSelection), 0x0C9B);
+
+			/* SERVER ENTER WORLD STATE */
+
+			/* SERVER IN GAME STATE */
+			ServerFrames.TryAdd(typeof(SMSG_Chat), 0x0EAC); // todo: update
+
+			/* TODO: CLEANUP BELOW */
+			ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcf2);
             ServerFrames.TryAdd(typeof(SpSpawnCharacter), 0x0ce2);
             ServerFrames.TryAdd(typeof(SpInventory), 0x0bf2);
             ServerFrames.TryAdd(typeof(SpCharacterEquipment), 0x0d62);
             ServerFrames.TryAdd(typeof(SpUpdateLevel), 0x0f80);
             ServerFrames.TryAdd(typeof(SpCharacterCustimozationData), 0x10a4);
-            /**/
-
             ServerFrames.TryAdd(typeof(SpCharacterInformation), 0x0d3a);            
-            ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);
-            ServerFrames.TryAdd(typeof(SpChat), 0x0e8e);                                 
+            ServerFrames.TryAdd(typeof(SpCharacterCustomizationResponse), 0x1086);                               
             ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerName), 0x1089); 
             ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerEquipment), 0x1087); 
             ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SpSetPlayerFamilyName), 0x1088);
@@ -71,20 +91,20 @@ namespace WorldServer.Emu.Networking.Handling
             using (var stream = new MemoryStream(packetBody))
             using (var reader = new BinaryReader(stream))
             {
-                var isCrypt = reader.ReadBoolean(); //need just read for move position, we decrypt before
+                var isCrypt = reader.ReadBoolean(); // need just read for move position, we decrypt before
                 var sequence = reader.ReadInt16();
                 var opCode = reader.ReadInt16();
-                var body = reader.ReadBytes(packetBody.Length - 5); //without crypt flag, sequence and opCode length
+                var body = reader.ReadBytes(packetBody.Length - 5); // without crypt flag, sequence and opCode length
 
-                client.SequenceId = sequence; //install sequence id
+                client.SequenceId = sequence; // install sequence id
 
                 lock(RLock)
                     RecvEvent?.Invoke(opCode, body, isCrypt);
 
-                if (ClientFrames.ContainsKey(opCode)) //check, if packet exist
-                    ((APacketProcessor)Activator.CreateInstance(ClientFrames[opCode])).Process(client, body);//process packet  
+                if (ClientFrames.ContainsKey(opCode)) // check, if packet exist
+                    ((APacketProcessor)Activator.CreateInstance(ClientFrames[opCode])).Process(client, body); // process packet  
                 else if(CfgCore.Default.LogUnkPackets)
-                    Console.WriteLine($"Unknown packet\nOpCode {opCode}\nData:\n {body.FormatHex()}"); //if packet not exist, we cannot proccess hem, just write log
+                    Console.WriteLine($"Unknown packet\nOpCode {opCode}\nData:\n {body.FormatHex()}"); // if packet not exist, we cannot proccess hem, just write log
             }
         }
 

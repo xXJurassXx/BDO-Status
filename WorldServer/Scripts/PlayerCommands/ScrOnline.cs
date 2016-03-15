@@ -16,7 +16,7 @@ namespace WorldServer.Scripts.PlayerCommands
                 var onlineCount = s.CharacterProcessor.OnlineList.Count;
 
 
-                new SpChat($"Players online:{onlineCount}", connection.ActivePlayer.GameSessionId, connection.ActivePlayer.DatabaseCharacterData.CharacterName, ChatType.Public).Send(connection);
+                new SMSG_Chat($"Players online:{onlineCount}", connection.ActivePlayer.GameSessionId, connection.ActivePlayer.DatabaseCharacterData.CharacterName, ChatType.Public).Send(connection);
             });
         }
     }

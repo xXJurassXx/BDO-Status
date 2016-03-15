@@ -118,9 +118,8 @@ namespace WorldServer.Emu.Processors
                     (short)(e.Slot + 1), e => new InventoryItem(e.ItemId, e.Count) {StorageType = (StorageType) e.StorageType}), 48);           
                 
 
-                new SpCharacterList(connection.Account, connection.Characters).Send(connection);
-
-                new SpRaw("FEFFFFFFFFFFFFFF00", 0x0c77).SendRaw(connection);
+                new SMSG_LoginUserToFieldServer(connection.Account, connection.Characters).Send(connection);
+                new SMSG_FixedCharge();
             }
         }
 
@@ -132,7 +131,7 @@ namespace WorldServer.Emu.Processors
             {
                 if (db.QueryOver<CharacterData>().Where(s => s.CharacterName == info.CharacterName).Take(1).SingleOrDefault() != null)
                 {
-                    new SpCreateCharacterError().Send(connection);
+                    new SMSG_CreateCharacterToFieldNak().Send(connection);
 
                     return;
                 }
@@ -145,7 +144,7 @@ namespace WorldServer.Emu.Processors
                         characterData.Surname = connection.Account.FamilyName;
                         characterData.Level = 1;
                         characterData.CreationDate = DateTime.Now;
-                        characterData.CreatedId = 0;//for nhibernate driver
+                        characterData.CreatedId = 0; // for nhibernate driver
                         characterData.PositionX = -96297;
                         characterData.PositionY = -3872;
                         characterData.PositionZ = 77811;
@@ -166,7 +165,7 @@ namespace WorldServer.Emu.Processors
 
                         connection.Characters.Add(characterData);
 
-                        new SpCreateCharacter(characterData).Send(connection, false);
+                        new SMSG_CreateCharacterToField(characterData).Send(connection, false);
 
                         transaction.Commit();
                     }
@@ -196,8 +195,9 @@ namespace WorldServer.Emu.Processors
                         
                         db.Delete(deleted);
 
-                        //TODO - Delayed removed task
-                        new SpDeleteCharacter(characterId, 1, deletionTime).Send(connection);
+						// TODO: Delayed removed task
+						bool isDelayedDelete = false;
+                        new SMSG_RemoveCharacterFromField(characterId, isDelayedDelete, deletionTime).Send(connection);
 
                         transaction.Commit();
                     }
@@ -415,7 +415,14 @@ namespace WorldServer.Emu.Processors
             });
         }
 
-        public object OnUnload()
+		public void BackToServerSelection(ClientConnection connection, int cookieId)
+		{
+			
+			// TODO: method / task
+			new SMSG_ExitFieldServerToServerSelection().Send(connection);
+		}
+
+		public object OnUnload()
         {
             return null;
         }

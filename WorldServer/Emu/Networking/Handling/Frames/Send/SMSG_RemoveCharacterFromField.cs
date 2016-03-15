@@ -1,17 +1,17 @@
 ﻿using System.IO;
 using Commons.Utils;
 /*
-   Author:Sagara
+   Author: Sagara, RBW
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
-    public class SpDeleteCharacter : APacketProcessor
+    public class SMSG_RemoveCharacterFromField : APacketProcessor
     {
         private readonly long _characterid;
-        private readonly byte _result;
+        private readonly bool _result;
         private readonly int _date;
 
-        public SpDeleteCharacter(long id, byte result, int date)
+        public SMSG_RemoveCharacterFromField(long id, bool result, int date)
         {
             _characterid = id;
             _date = date;
@@ -22,9 +22,10 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.WriteQ(_characterid);
-                writer.WriteQ(_date);
-                writer.WriteC(_result);
+				/* Q,Q,c */
+                writer.Write((long)_characterid);
+                writer.Write((long)_date);
+                writer.Write((bool)_result);
 
                 return stream.ToArray();
             }

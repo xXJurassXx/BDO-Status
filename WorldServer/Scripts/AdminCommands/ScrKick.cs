@@ -24,7 +24,7 @@ namespace WorldServer.Scripts.AdminCommands
                                 p => p.DatabaseCharacterData.CharacterName == selectedName);
 
                         if (result == null)
-                            new SpChat($"[Admin processor] cannot found {selectedName} player", connection.ActivePlayer.GameSessionId,
+                            new SMSG_Chat($"[Admin processor] cannot found {selectedName} player", connection.ActivePlayer.GameSessionId,
                                 connection.ActivePlayer.DatabaseCharacterData.CharacterName, ChatType.Notice)
                                 .Send(connection);
                         else
@@ -38,7 +38,7 @@ namespace WorldServer.Scripts.AdminCommands
                     if (select != null)
                         select.Connection.CloseConnection();
                     else
-                        new SpChat($"[Admin processor] cannot found {message[0]} player",
+                        new SMSG_Chat($"[Admin processor] cannot found {message[0]} player",
                             connection.ActivePlayer.GameSessionId, connection.ActivePlayer.DatabaseCharacterData.CharacterName, ChatType.Notice).Send(connection);
                 }
             });

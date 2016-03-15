@@ -1,13 +1,13 @@
 ﻿/*
-   Author: InCube
+   Author: RBW
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
-    class RpHeartbeat : APacketProcessor
+    class CMSG_GetWebBenefit : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {
-            // Do nothing
-        }
+			Log.Info("Client Get Web Benefits Resquested From Game Session!");
+		}
     }
 }

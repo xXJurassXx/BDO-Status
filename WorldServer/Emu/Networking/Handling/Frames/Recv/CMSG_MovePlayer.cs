@@ -6,28 +6,25 @@ using WorldServer.Emu.Structures.Geo.Basics;
 
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
-    class RpMovement : APacketProcessor
+    class CMSG_MovePlayer : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {
             using (var stream = new MemoryStream(data))
             using (var reader = new BinaryReader(stream))
             {
-                int type = reader.ReadInt32();
-                reader.ReadInt16();
                 float start_x = reader.ReadSingle();
                 float start_y = reader.ReadSingle();
-                float start_z = reader.ReadSingle();              
-                reader.ReadInt64();//zeros
+                float start_z = reader.ReadSingle();
+				float cosinus = reader.ReadSingle();
+				reader.ReadInt32(); // 0
+				float sinus = reader.ReadSingle();
+				reader.Skip(12); // zeros
+				reader.ReadSingle(); // not 0
 
-                float x1 = reader.ReadSingle();
+				float x1 = reader.ReadSingle();
                 float y1 = reader.ReadSingle();
                 float z1 = reader.ReadSingle();
-
-                float cosinus = reader.ReadSingle();
-                float unk2 = reader.ReadSingle();
-                float sinus = reader.ReadSingle();
-                float unk4 = reader.ReadSingle();
 
                 float x2 = reader.ReadSingle();
                 float y2 = reader.ReadSingle();
@@ -53,15 +50,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
                 float y7 = reader.ReadSingle();
                 float z7 = reader.ReadSingle();
 
-                float x8 = reader.ReadSingle();
-                float y8 = reader.ReadSingle();
-                float z8 = reader.ReadSingle();
-
-                float x9 = reader.ReadSingle();
-                float y9 = reader.ReadSingle();
-                float z9 = reader.ReadSingle();
-
-                reader.Skip(94); //zeros
+                reader.Skip(32); // zeros
 
                 var cHeading = Math.Acos(cosinus);
                 var sHeading = Math.Asin(sinus);

@@ -69,8 +69,8 @@ namespace WorldServer.Emu.Processors
 
                 client.Account = model;
 
-                new SpUnk().Send(client, false);
-                new SpUnk2().Send(client, false);
+                new SMSG_GetContentServiceInfo().Send(client, false);
+                new SMSG_ChargeUser().Send(client, false);
 
                 Core.Act(s => s.LobbyProcessor.GetCharacterList(client));
             }

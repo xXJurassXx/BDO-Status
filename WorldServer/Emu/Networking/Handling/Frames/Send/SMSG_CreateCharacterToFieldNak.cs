@@ -1,17 +1,18 @@
 ﻿using System.IO;
 /*
-   Author:Sagara
+   Author: Sagara, RBW
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
-    internal class SpCreateCharacterError : APacketProcessor
+    internal class SMSG_CreateCharacterToFieldNak : APacketProcessor
     {
         public override byte[] WritedData()
         {
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write("2284adb1");//name already used. TODO - find other
+				/* d */
+                writer.Write("2284ADB1"); // name already used. TODO: find others
 
                 return stream.ToArray();
             }
