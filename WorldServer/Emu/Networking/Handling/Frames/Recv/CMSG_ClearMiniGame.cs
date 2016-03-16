@@ -3,25 +3,21 @@
 */
 using System.IO;
 using System.Text;
-using WorldServer.Emu.Networking.Handling.Frames.Send;
 
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
-    class CMSG_RecentJournal : APacketProcessor
+    class CMSG_ClearMiniGame : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {
 			using (var stream = new MemoryStream(data))
 			using (var reader = new BinaryReader(stream))
 			{
-				/* h */
-				var unk = reader.ReadInt16();
+				/* h,d */
+				var unk1 = reader.ReadInt16();
+                var unk2 = reader.ReadInt32();
 			}
-			/*
-			// SMSG_RecentJournal
-			new SpRaw("0000", 0x10D9).SendRaw(client);
-			*/
-			Log.Info("Client Recent Journal Resquested From Game Session!");
+			Log.Info("Client Clear MiniGame Resquested From Game Session!");
 		}
     }
 }

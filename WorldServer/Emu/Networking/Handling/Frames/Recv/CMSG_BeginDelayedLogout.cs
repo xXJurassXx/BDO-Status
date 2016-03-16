@@ -3,6 +3,7 @@
 */
 using System.IO;
 using System.Text;
+using WorldServer.Emu.Networking.Handling.Frames.Send;
 
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
@@ -14,6 +15,8 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 			using (var reader = new BinaryReader(stream))
 			{
 				var result = reader.ReadByte();
+
+				new SMSG_BeginDelayedLogout(10000).Send(client);
 			}
 
             Core.Act(s => s.CharacterProcessor.Requests.CloseClientRequest(client));

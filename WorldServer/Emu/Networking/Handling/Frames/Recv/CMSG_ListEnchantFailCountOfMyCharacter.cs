@@ -22,7 +22,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 			var uid = BitConverter.GetBytes(client.ActivePlayer.Uid).ToHex();
 
 			// SMSG_ListEnchantFailCountOfMyCharacter
-			new SpRaw("0100" + uid + "0000000000000000", 0x0CFD).SendRaw(client.ActivePlayer.Connection);
+			new SpRaw("0100" + uid + "0000000000000000", 0x0CFD).SendRaw(client);
 			*/
 			Log.Info("Client List Enchant Fail Count Of My Character Resquested From Game Session!");
 		}

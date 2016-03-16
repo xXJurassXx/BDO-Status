@@ -23,7 +23,7 @@ namespace WorldServer.Scripts.AdminCommands
 
             new SBpPlayerSpawn.SpSpawnPlayer(player).Send(connection);
             new SBpPlayerSpawn.SMSG_RefreshPcBasicCache(player).Send(connection);
-            new SBpPlayerSpawn.SMSG_RefreshUserBasicCache(player, connection.Account).Send(connection);
+            new SBpPlayerSpawn.SMSG_RefreshUserBasicCache(player).Send(connection);
             new SBpPlayerSpawn.SMSG_RefreshPcEquipSlotCache(player).Send(connection);
             new SMSG_RefreshPcCustomizationCache(player).Send(connection);
             new SMSG_RefreshPcLearnedActiveSkillsCache(player).Send(connection);            

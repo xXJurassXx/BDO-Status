@@ -33,12 +33,12 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 				writer.Write((short)1); // loop count
 				{
 					writer.Write((int)_character.GameSessionId);
-					writer.Write("8014BCC7".ToBytes()); // x
-					writer.Write("000072C5".ToBytes()); // y
-					writer.Write("80F99747".ToBytes()); // z
-					writer.Write("046788BE".ToBytes()); // cosinus
+					writer.Write((float)_character.Position.Point.X); // x
+					writer.Write((float)_character.Position.Point.Y); // y
+					writer.Write((float)_character.Position.Point.Z); // z
+					writer.Write((float)_character.Position.Cosinus); // cosinus
 					writer.Write((int)0);
-					writer.Write("80BF763F".ToBytes()); // sinus
+					writer.Write((float)_character.Position.Sinus); // sinus
 					writer.Write((short)_character.DatabaseCharacterData.ClassType.Ordinal());
 					writer.Write((short)0);
 					writer.Write((float)150); // hp

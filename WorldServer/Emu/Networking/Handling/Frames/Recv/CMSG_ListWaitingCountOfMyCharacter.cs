@@ -21,8 +21,8 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 			/*
 			var uid = BitConverter.GetBytes(client.ActivePlayer.Uid).ToHex();
 
-			// SMSG_WaitToEnterToField
-			new SpRaw("FFFFFFFFFFFFFFFF" + "0000000000000000" + "0000000000000000" + "01" + uid + "FFFFFFFFFFFFFFFF", 0x0CF1).SendRaw(client.ActivePlayer.Connection);
+			// SMSG_WaitToEnterToField [Q,Q,Q,c,Q,Q]
+			new SpRaw("FFFFFFFFFFFFFFFF0000000000000000000000000000000001" + uid + "FFFFFFFFFFFFFFFF", 0x0CF1).SendRaw(client);
 			*/
 			Log.Info("Client List Waiting Count Of My Character Resquested From Game Session!");
 		}

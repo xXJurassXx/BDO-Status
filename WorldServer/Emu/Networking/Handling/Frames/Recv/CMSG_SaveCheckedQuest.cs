@@ -3,25 +3,19 @@
 */
 using System.IO;
 using System.Text;
-using WorldServer.Emu.Networking.Handling.Frames.Send;
 
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
-    class CMSG_RecentJournal : APacketProcessor
+    class CMSG_SaveCheckedQuest : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {
 			using (var stream = new MemoryStream(data))
 			using (var reader = new BinaryReader(stream))
 			{
-				/* h */
-				var unk = reader.ReadInt16();
+				/* TODO */
 			}
-			/*
-			// SMSG_RecentJournal
-			new SpRaw("0000", 0x10D9).SendRaw(client);
-			*/
-			Log.Info("Client Recent Journal Resquested From Game Session!");
+			Log.Info("Client Save Checked Quest Resquested From Game Session!");
 		}
     }
 }

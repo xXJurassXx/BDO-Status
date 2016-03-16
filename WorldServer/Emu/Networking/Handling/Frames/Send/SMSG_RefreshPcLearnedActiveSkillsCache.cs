@@ -24,8 +24,12 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
                 writer.Write("E86C0000".ToBytes()); // unk
 				writer.Write((short)2); // loop count?
 				{
-					writer.Write("0100" + "3203".ToBytes()); // unk
-					writer.Write("0100" + "3B03".ToBytes()); // unk
+					// 1
+					writer.Write("0100".ToBytes()); // unk
+					writer.Write("3203".ToBytes()); // unk
+					// 2
+					writer.Write("0100".ToBytes()); // unk
+					writer.Write("3B03".ToBytes()); // unk
 				}
 				
 				return stream.ToArray();

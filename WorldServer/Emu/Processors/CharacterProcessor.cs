@@ -101,11 +101,11 @@ namespace WorldServer.Emu.Processors
         {
             public void CloseClientRequest(ClientConnection connection)
             {
-                Core.Act(s =>
+				Core.Act(s =>
                 {
                     connection.CloseConnection();
-                }, CfgCore.Default.LogoutSeconds * 1000, connection.ActivePlayer.CancelTokenSource);
-            }
+                }, 10000, connection.ActivePlayer.CancelTokenSource);
+			}
 
             public void CancelCloseClientRequest(ClientConnection connection)
             {

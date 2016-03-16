@@ -38,7 +38,7 @@ namespace WorldServer.Emu.Networking.Handling
 			ClientFrames.TryAdd(0x10D3, typeof(CMSG_ReadJournal));
 			ClientFrames.TryAdd(0x0DAA, typeof(CMSG_ListSiegeGuild));
 			ClientFrames.TryAdd(0x0F62, typeof(CMSG_GetWebBenefit));
-			ClientFrames.TryAdd(0x0CE0, typeof(CMSG_SetReadyToPlay));
+			ClientFrames.TryAdd(0x0CED, typeof(CMSG_SetReadyToPlay));
 			ClientFrames.TryAdd(0x10D7, typeof(CMSG_WriteJournalPlayCutScene));
 			ClientFrames.TryAdd(0x0CE0, typeof(CMSG_PaymentPasswordRegister));
 
@@ -48,12 +48,18 @@ namespace WorldServer.Emu.Networking.Handling
 			ClientFrames.TryAdd(0x0BCF, typeof(CMSG_PlayerDirection));
 			ClientFrames.TryAdd(0x0D0C, typeof(CMSG_DoAction));
 			ClientFrames.TryAdd(0x0D05, typeof(CMSG_StartAction));
+			ClientFrames.TryAdd(0x0E74, typeof(CMSG_ClearMiniGame));
+			ClientFrames.TryAdd(0x0E5E, typeof(CMSG_AcceptQuest));
+			ClientFrames.TryAdd(0x0E61, typeof(CMSG_CompleteQuest));
+			ClientFrames.TryAdd(0x0E5D, typeof(CMSG_SaveCheckedQuest));
+			ClientFrames.TryAdd(0x0E46, typeof(CMSG_ContactNpc));
 
 			/* CLIENT LOGOUT STATE */
 			ClientFrames.TryAdd(0x0CF0, typeof(CMSG_ListWaitingCountOfMyCharacter));
 			ClientFrames.TryAdd(0x10D8, typeof(CMSG_RecentJournal));
 			ClientFrames.TryAdd(0x0CFC, typeof(CMSG_ListEnchantFailCountOfMyCharacter));
 			ClientFrames.TryAdd(0x0CF9, typeof(CMSG_SetPlayerCharacterMemo));
+			ClientFrames.TryAdd(0x0CEE, typeof(CMSG_ExitFieldToCharacterSelection));
 			ClientFrames.TryAdd(0x0BDB, typeof(CMSG_BeginDelayedLogout));
 			ClientFrames.TryAdd(0x0BD8, typeof(CMSG_CancelDelayedLogout));
 			ClientFrames.TryAdd(0x0BD9, typeof(CMSG_EndDelayedLogout));
@@ -80,6 +86,10 @@ namespace WorldServer.Emu.Networking.Handling
 
 			/* SERVER IN GAME STATE */
 			ServerFrames.TryAdd(typeof(SMSG_Chat), 0x0EAC);
+			ServerFrames.TryAdd(typeof(SMSG_ContactNpc), 0x0E47);
+			ServerFrames.TryAdd(typeof(SMSG_AcceptQuest), 0x0E5F);
+			ServerFrames.TryAdd(typeof(SMSG_UpdateQuest), 0x0E60);
+			ServerFrames.TryAdd(typeof(SMSG_CompleteQuest), 0x0E62);
 			ServerFrames.TryAdd(typeof(SMSG_GetAllEquipSlot), 0x0D65);
 			ServerFrames.TryAdd(typeof(SMSG_AddItemToInventory), 0x0BF1);
 			ServerFrames.TryAdd(typeof(SMSG_SetCharacterLevels), 0x0F7E);
@@ -88,6 +98,10 @@ namespace WorldServer.Emu.Networking.Handling
 			ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SMSG_RefreshPcEquipSlotCache), 0x10AA);
 			ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SMSG_RefreshUserBasicCache), 0x10AB);
 			ServerFrames.TryAdd(typeof(SBpPlayerSpawn.SMSG_RefreshPcBasicCache), 0x10AC);
+
+			/* SERVER LOGOUT STATE */
+			ServerFrames.TryAdd(typeof(SMSG_ExitFieldToCharacterSelection), 0x0CEF);
+			ServerFrames.TryAdd(typeof(SMSG_BeginDelayedLogout), 0x0BDC);
 
 			/* TODO: CLEANUP BELOW - ALL OPCODES OUTDATED */
 			//ServerFrames.TryAdd(typeof(SpEnterOnWorldResponse), 0xcf2);

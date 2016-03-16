@@ -7,21 +7,20 @@ using WorldServer.Emu.Networking.Handling.Frames.Send;
 
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
-    class CMSG_RecentJournal : APacketProcessor
+    class CMSG_ContactNpc : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {
 			using (var stream = new MemoryStream(data))
 			using (var reader = new BinaryReader(stream))
 			{
-				/* h */
-				var unk = reader.ReadInt16();
+				/* TODO */
+				var unk1 = reader.ReadInt64();
+				var unk2 = reader.ReadInt32();
+
+				new SMSG_ContactNpc(unk1, unk2).Send(client);
 			}
-			/*
-			// SMSG_RecentJournal
-			new SpRaw("0000", 0x10D9).SendRaw(client);
-			*/
-			Log.Info("Client Recent Journal Resquested From Game Session!");
+			Log.Info("Client Contact Npc Resquested From Game Session!");
 		}
     }
 }

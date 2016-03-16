@@ -20,8 +20,9 @@ using WorldServer.Emu.Models.Storages;
 using WorldServer.Emu.Models.Storages.Abstracts;
 using WorldServer.Emu.Networking;
 using WorldServer.Emu.Networking.Handling.Frames.Send;
+using WorldServer.Emu.Networking.Handling.Frames.Send.OPSBlob;
 /*
-   Author:Sagara
+Author:Sagara
 */
 namespace WorldServer.Emu.Processors
 {
@@ -145,9 +146,71 @@ namespace WorldServer.Emu.Processors
                         characterData.Level = 1;
                         characterData.CreationDate = DateTime.Now;
                         characterData.CreatedId = 0; // for nhibernate driver
-                        characterData.PositionX = -96297;
-                        characterData.PositionY = -3872;
-                        characterData.PositionZ = 77811;
+
+						/* TEMP FIX UNTIL DATA IS FOUND AND LOADED */
+						switch (characterData.ClassType)
+						{
+							case ClassType.Warrior:
+                                characterData.PositionX = -153728;
+								characterData.PositionY = 531;
+								characterData.PositionZ = 130574;
+								break;
+							case ClassType.Ranger:
+                                characterData.PositionX = -138793;
+								characterData.PositionY = -1208;
+								characterData.PositionZ = 137342;
+								break;
+							case ClassType.Sorcerer:
+                                characterData.PositionX = -135621;
+								characterData.PositionY = 802;
+								characterData.PositionZ = 107359;
+								break;
+							case ClassType.Giant:
+                                characterData.PositionX = -120118;
+								characterData.PositionY = -1625;
+								characterData.PositionZ = 118794;
+								break;
+							case ClassType.Tamer:
+                                characterData.PositionX = -159853;
+								characterData.PositionY = 2089;
+								characterData.PositionZ = 123726;
+								break;
+							case ClassType.BladeMaster:
+                                characterData.PositionX = -154408;
+								characterData.PositionY = -335;
+								characterData.PositionZ = 135204;
+								break;
+							case ClassType.BladeMasterWomen:
+								characterData.PositionX = -154408;
+								characterData.PositionY = -335;
+								characterData.PositionZ = 135204;
+								break;
+							case ClassType.Valkyrie:
+                                characterData.PositionX = -145479;
+								characterData.PositionY = 2185;
+								characterData.PositionZ = 110947;
+								break;
+							case ClassType.Kunoichi:
+                                characterData.PositionX = -136152;
+								characterData.PositionY = -730;
+								characterData.PositionZ = 128869;
+								break;
+							case ClassType.Ninja:
+								characterData.PositionX = -136152;
+								characterData.PositionY = -730;
+								characterData.PositionZ = 128869;
+								break;
+							case ClassType.Wizard:
+                                characterData.PositionX = -157013;
+								characterData.PositionY = 946;
+								characterData.PositionZ = 128052;
+								break;
+							case ClassType.WizardWomen:
+								characterData.PositionX = -157013;
+								characterData.PositionY = 946;
+								characterData.PositionZ = 128052;
+								break;
+						}
 
                         var inventory = InventoryStorage.GetDefault(characterData.ClassType);
                         foreach (var daoItem in inventory.Items.Select(item => new CharacterItem
@@ -309,7 +372,12 @@ namespace WorldServer.Emu.Processors
 			new SMSG_PlayerLogOnOff(connection.ActivePlayer).Send(connection);
 			new SMSG_LoadFieldComplete().Send(connection);
 			new SMSG_EnterPlayerCharacterToFieldComplete().Send(connection);
+			/* IMPORTANT PACKETS - NEED BETTER HANDLING */
 			new SMSG_RefreshPcCustomizationCache(connection.ActivePlayer).Send(connection);
+			new SMSG_RefreshPcLearnedActiveSkillsCache(connection.ActivePlayer).Send(connection);
+			new SBpPlayerSpawn.SMSG_RefreshPcEquipSlotCache(connection.ActivePlayer).Send(connection);
+			new SBpPlayerSpawn.SMSG_RefreshUserBasicCache(connection.ActivePlayer).Send(connection);
+			new SBpPlayerSpawn.SMSG_RefreshPcBasicCache(connection.ActivePlayer).Send(connection);
 		}
 
 		public void PrepareForEnterOnWorld(ClientConnection connection, long characterId)

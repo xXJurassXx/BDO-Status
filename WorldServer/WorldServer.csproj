@@ -116,6 +116,12 @@
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_GetInstallationList.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_EndDelayedLogout.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_CancelDelayedLogout.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_CompleteQuest.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_AcceptQuest.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_ExitFieldToCharacterSelection.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_ContactNpc.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_SaveCheckedQuest.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_ClearMiniGame.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_SetPlayerCharacterMemo.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_ListEnchantFailCountOfMyCharacter.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_ListWaitingCountOfMyCharacter.cs" />
@@ -141,6 +147,12 @@
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_MovePlayer.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Recv\CMSG_BeginDelayedLogout.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\OPSBlob\SBpPlayerSpawn.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_BeginDelayedLogout.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_ContactNpc.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_ExitFieldToCharacterSelection.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_CompleteQuest.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_UpdateQuest.cs" />
+    <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_AcceptQuest.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_LoadFieldComplete.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_PlayerLogOnOff.cs" />
     <Compile Include="Emu\Networking\Handling\Frames\Send\SMSG_AddPlayers.cs" />

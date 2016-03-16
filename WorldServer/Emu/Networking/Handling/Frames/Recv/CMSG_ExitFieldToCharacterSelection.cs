@@ -7,21 +7,18 @@ using WorldServer.Emu.Networking.Handling.Frames.Send;
 
 namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 {
-    class CMSG_RecentJournal : APacketProcessor
+    class CMSG_ExitFieldToCharacterSelection : APacketProcessor
     {
         public override void Process(ClientConnection client, byte[] data)
         {
 			using (var stream = new MemoryStream(data))
 			using (var reader = new BinaryReader(stream))
 			{
-				/* h */
-				var unk = reader.ReadInt16();
+				/* empty */
+				/* TODO: create method */
+				//new SMSG_ExitFieldToCharacterSelection().Send(client);
 			}
-			/*
-			// SMSG_RecentJournal
-			new SpRaw("0000", 0x10D9).SendRaw(client);
-			*/
-			Log.Info("Client Recent Journal Resquested From Game Session!");
+			Log.Info("Client Exit Field To Character Selection Resquested From Game Session!");
 		}
     }
 }
