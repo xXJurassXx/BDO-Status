@@ -20,7 +20,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Recv
 				var unk2 = reader.ReadInt32(); // 2
 				string macAddress = reader.ReadString(18, Encoding.ASCII).Replace("\0", "");
 				var unkBytes = reader.ReadBytes(15); // unk padding bytes
-				Log.Info("token id: " + token + " unk1: " + unk1 + " unk2: " + unk2 + " mac address: " + macAddress);
+				Log.Info("token id: " + token + " cookie: " + cookie + " unk1: " + unk1 + " unk2: " + unk2);
 
 				Core.Act(s => s.AuthProcessor.AuthProcess(client, token));
             }

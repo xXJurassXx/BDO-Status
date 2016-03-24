@@ -17,18 +17,21 @@ namespace LoginServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-            ClientFrames.TryAdd(0x03E9, typeof(CMSG_Heartbeat));
-            ClientFrames.TryAdd(0x0C79, typeof(CMSG_GetCreateUserInformationToAuthenticServer));
-            ClientFrames.TryAdd(0x0C7B, typeof(CMSG_LoginUserToAuthenticServer));
-            ClientFrames.TryAdd(0x0C7E, typeof(CMSG_RegisterNickNameToAuthenticServer));
+			/* NA-EU v63 */
 
-            ServerFrames.TryAdd(typeof(SMSG_GetCreateUserInformationToAuthenticServer), 0x0C7A);
-            ServerFrames.TryAdd(typeof(SMSG_LoginUserToAuthenticServer), 0xC7C);
-            ServerFrames.TryAdd(typeof(SMSG_GetContentServiceInfo), 0xC9C);
-            ServerFrames.TryAdd(typeof(SMSG_RegisterNickNameToAuthenticServer), 0x0C7F);
-            ServerFrames.TryAdd(typeof(SMSG_FixedCharge), 0x0C78);
-            ServerFrames.TryAdd(typeof(SMSG_GetWorldInformations), 0x0C81);
-        }
+            ClientFrames.TryAdd(0x03E9, typeof(CMSG_Heartbeat));
+            ClientFrames.TryAdd(0x0C7A, typeof(CMSG_GetCreateUserInformationToAuthenticServer));
+            ClientFrames.TryAdd(0x0C7C, typeof(CMSG_LoginUserToAuthenticServer));
+            ClientFrames.TryAdd(0x0C7F, typeof(CMSG_RegisterNickNameToAuthenticServer));
+			//ClientFrames.TryAdd(0x0C81, typeof(CMSG_GetWorldInformations));
+
+			ServerFrames.TryAdd(typeof(SMSG_FixedCharge), 0x0C79);
+			ServerFrames.TryAdd(typeof(SMSG_GetCreateUserInformationToAuthenticServer), 0x0C7B);
+            ServerFrames.TryAdd(typeof(SMSG_LoginUserToAuthenticServer), 0xC7D);
+            ServerFrames.TryAdd(typeof(SMSG_RegisterNickNameToAuthenticServer), 0x0C80);
+            ServerFrames.TryAdd(typeof(SMSG_GetWorldInformations), 0x0C82);
+			ServerFrames.TryAdd(typeof(SMSG_GetContentServiceInfo), 0xC9D);
+		}
 
         /// <summary>
         /// Handle packet

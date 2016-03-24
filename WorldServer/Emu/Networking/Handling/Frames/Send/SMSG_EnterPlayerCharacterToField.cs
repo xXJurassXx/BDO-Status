@@ -67,6 +67,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 				writer.Write((short)0); // item - weapon?
 				writer.Write((short)0);
 				writer.Write((int)-1021);
+				writer.Write(new byte[6]);
 				writer.Write((byte)37);
 				writer.Write(new byte[12]);
 				writer.Write((byte)5);
