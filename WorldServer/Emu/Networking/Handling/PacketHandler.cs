@@ -36,7 +36,7 @@ namespace WorldServer.Emu.Networking.Handling
 			ClientFrames.TryAdd(0x0C9B, typeof(CMSG_ExitFieldServerToServerSelection));
 
 			/* CLIENT ENTER WORLD STATE */
-			ClientFrames.TryAdd(0x10AC, typeof(CMSG_RefreshCacheData));
+			ClientFrames.TryAdd(0x10AD, typeof(CMSG_RefreshCacheData));
 			ClientFrames.TryAdd(0x10D9, typeof(CMSG_ReadJournal));
 			ClientFrames.TryAdd(0x0DAD, typeof(CMSG_ListSiegeGuild));
 			ClientFrames.TryAdd(0x0F66, typeof(CMSG_GetWebBenefit));
