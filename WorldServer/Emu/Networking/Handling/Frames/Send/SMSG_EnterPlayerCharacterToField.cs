@@ -39,6 +39,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 				writer.Write((float)1); // hp
 				writer.Write((float)150); // hp
 				writer.Write((long)-6012);
+				writer.Write(new byte[8]);
 				writer.Write((long)-6012);
 				writer.Write((byte)2);
 				writer.Write("946DE495".ToBytes());

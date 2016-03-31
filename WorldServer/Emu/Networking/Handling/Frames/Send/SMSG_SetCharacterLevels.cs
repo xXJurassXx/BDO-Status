@@ -2,7 +2,7 @@
 using Commons.Utils;
 using WorldServer.Emu.Models.Creature.Player;
 /*
-   Author:Sagara
+   Author: Sagara, RBW
 */
 namespace WorldServer.Emu.Networking.Handling.Frames.Send
 {
@@ -18,13 +18,16 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write("ABE7FFFFFFFFFFFFABE7FFFFFFFFFFFF".ToBytes());//static field
-                writer.WriteD(_player.GameSessionId);
-                writer.WriteD(_player.DatabaseCharacterData.Level);              
-                writer.WriteQ(0); 
-                writer.WriteQ(1); //2626 percent todo
-                writer.Skip(9);
-                return stream.ToArray();
+                writer.Write("ABE7FFFFFFFFFFFF".ToBytes());
+				writer.Write("ABE7FFFFFFFFFFFF".ToBytes());
+				writer.Write((int)_player.GameSessionId);
+                writer.Write((int)_player.DatabaseCharacterData.Level);              
+                writer.Write((long)0); // exp have
+                writer.Write((long)1); // exp need
+				writer.Write((int)0);
+				writer.Write((int)0);
+				writer.Write((byte)0);
+				return stream.ToArray();
             }
         }
     }

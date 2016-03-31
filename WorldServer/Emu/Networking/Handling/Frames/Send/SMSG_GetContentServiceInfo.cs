@@ -63,7 +63,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 				writer.Write((byte)32);
 				writer.Write((byte)32);
 
-				writer.Write((int)56); // max level
+				writer.Write((int)61); // max level?
 				writer.Write((int)1);
 				writer.Write((int)86400);
 				writer.Write((int)0);
@@ -75,7 +75,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 				writer.Write((byte)0);
 				writer.Write((byte)1);
 				writer.Write((byte)0);
-				writer.Write((byte)6);
+				writer.Write((byte)9); // maps? 6+3 with mediah
 				writer.Write((byte)0);
 				writer.Write((byte)0);
 				writer.Write((byte)150);
@@ -84,9 +84,9 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
 				writer.Write((byte)0);
 				writer.Write((byte)0);
 
-				writer.Write((short)50); // extra unk loop size related to server list
-				// loop content: [c,h]*50
-				writer.Write("040100040200040300040400040500040600040700040800040900040B00040C00040D00040E00040F00041000041100041200041300041400041500041600041700041800041900041F00042100042200042400042500042600042700042800042900042A00042B00042C00042D00042E00043D00043E00043F00044000046500046600046700046800046900046A00046B00046C00".ToBytes());
+				writer.Write((short)58); // extra unk loop size, 50+8 with mediah
+				// loop content: [c,h]*58
+				writer.Write("040100040200040300040400040500040600040700040800040900040B00040C00040D00040E00040F00041000041100041200041300041400041500041600041700041800041900041F00042100042200042400042500042600042700042800042900042A00042B00042C00042D00042E00043300043400043500043600043700043800043D00043E00043F00044000046500046600046700046800046900046A00046B00046C00046E00046F00".ToBytes());
 
 				return stream.ToArray();
             }        

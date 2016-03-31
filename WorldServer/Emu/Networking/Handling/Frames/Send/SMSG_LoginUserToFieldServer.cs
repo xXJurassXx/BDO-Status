@@ -29,7 +29,7 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             using (var writer = new BinaryWriter(stream))
             {
 				writer.Write((int)0); // packet number
-				writer.Write((int)4521); // server version
+				writer.Write((int)4530); // server version
 				writer.Write((int)14998534); // client session id
 				writer.Write((int)1678849575); // session cookie id
 				writer.Write((long)_account.Id); // account id

@@ -17,7 +17,7 @@ namespace LoginServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-			/* NA-EU v63 */
+			/* NA-EU v77 */
 
             ClientFrames.TryAdd(0x03E9, typeof(CMSG_Heartbeat));
             ClientFrames.TryAdd(0x0C7A, typeof(CMSG_GetCreateUserInformationToAuthenticServer));

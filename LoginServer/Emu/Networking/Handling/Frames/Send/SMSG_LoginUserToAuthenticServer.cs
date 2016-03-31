@@ -16,7 +16,7 @@ namespace LoginServer.Emu.Networking.Handling.Frames.Send
 				/* d,c,d */
 				writer.Write((int)1324048112); // clientSessionId [TODO: client session generator, it must NEVER be equal for all players]
 				writer.Write((byte)0); // registerFamilyName boolean [0=no, 1=yes]
-				writer.Write((int)4521); // serverVersion [updated from new server/client updates]
+				writer.Write((int)4530); // serverVersion [updated from new server/client updates]
 
 				return stream.ToArray();
             }

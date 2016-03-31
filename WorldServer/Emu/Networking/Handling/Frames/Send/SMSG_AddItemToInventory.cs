@@ -9,10 +9,12 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
     public class SMSG_AddItemToInventory : APacketProcessor
     {
         private readonly Player _player;
+		private readonly short _type;
 
-        public SMSG_AddItemToInventory(Player player)
+        public SMSG_AddItemToInventory(Player player, short type)
         {
             _player = player;
+			_type = type;
         }
 
         public override byte[] WritedData()
@@ -22,27 +24,40 @@ namespace WorldServer.Emu.Networking.Handling.Frames.Send
             {
                 var inventory = _player.Inventory;
                 
-                writer.WriteC(1);
-                writer.WriteC(1);
-                writer.WriteD(_player.GameSessionId);
-                writer.Skip(12);
-                writer.WriteH(inventory.Items.Count);
-                writer.WriteC(0);
+                writer.Write((byte)1);
+                writer.Write((byte)1);
+                writer.Write((int)_player.GameSessionId);
+				writer.Write((int)0);
+				writer.Write((int)0);
+				writer.Write((int)0);
 
-                for (short i = 0; i < inventory.Items.Count; i++)
-                {
-                    var item = inventory.Items[(short) (i + 1)];
-                   
-                    writer.WriteC(i);
-                    writer.WriteD(item.ItemId);
-                    writer.WriteQ(item.Count);
-                    writer.Write("FFFFFFFFFFFFFFFF".ToBytes());
-                    writer.WriteD(i == 0 ? 0 : 1);
-                    writer.WriteD(0);
-                    writer.WriteC(0);
-                    writer.Write("0100FF7FFF7F3A38E56FF2862300FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000000000000000000000000000000000000000000000000000000000".ToBytes());
-                }
+				if (_type == 0)
+				{
+					writer.Write((short)inventory.Items.Count);
+					for (short i = 0; i < inventory.Items.Count; i++)
+					{
+						var item = inventory.Items[(short)(i + 1)];
 
+						writer.Write((byte)0);
+						writer.Write((byte)i); // slot?
+						writer.Write((short)item.ItemId);
+						writer.Write((short)0); // enchant
+						writer.Write((long)item.Count);
+						writer.Write((long)-1); // time
+						writer.Write((byte)0);
+						writer.Write((long)0);
+						writer.Write((short)1);
+						writer.Write("FF7F".ToBytes()); // endurance
+						writer.Write("FF7F".ToBytes()); // endurance
+						writer.Write("3A38E56FF2862300".ToBytes()); // uid
+						writer.Write("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000000000000000000000000000000000000000000000000000000000".ToBytes()); // dyes + jewels
+					}
+				}
+				else
+				{
+					writer.Write((short)0);
+				}
+				
                 return stream.ToArray();
             }
         }
