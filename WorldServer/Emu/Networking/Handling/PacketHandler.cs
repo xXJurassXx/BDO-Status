@@ -21,7 +21,7 @@ namespace WorldServer.Emu.Networking.Handling
 
         static PacketHandler()
         {
-			/* NA-EU v77 */
+			/* NA-EU v77 & v83 */
 
 			/* CLIENT ANY STATES */
             ClientFrames.TryAdd(0x03E9, typeof(CMSG_Heartbeat));
