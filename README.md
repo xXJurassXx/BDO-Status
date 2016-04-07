@@ -2,7 +2,7 @@
 Desert Project is an Open-Source emulator for online MMORPG "Black Desert Online"
 
 ```
-Supported regions & clients: EU/NA v77 [2016/3/30]
+Supported regions & clients: EU/NA v77 [2016/3/30] & EU/NA v83 [2016/4/6]
 ```
 
 Disclaimer:
