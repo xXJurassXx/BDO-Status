@@ -4,18 +4,17 @@ Desert Project is an Open-Source emulator for online MMORPG "Black Desert Online
 ```
 Supported regions & clients: EU/NA v97
 
-Packet cryptography was patched on May 4th and still in progress of searching for it.
+Packet cryptography was patched on May 4th, awaiting for people willing to update this project.
 ```
 
 Disclaimer:
 ```
-This project is created and maintained for educational purposes.
-```
+This project has been built with education as the main purpose.
 
-Terms of Use:
-```
-You cannot create software that damages "Black Desert Online" MMORPG.
-You cannot use this software to advertise your illegal services.
+Since any public and/or commercial use of this software is considered illegal
+in many countries (please refer to your local law), we will not provide any
+help nor support with such usage in any way. Every user of this software is
+encouraged to make sure no law is being broken on his/her side.
 
-If any of these rules are void, you will be asked to remove your project immediately.
+We will not take any responsibility for any kind of usage of this software by the end users.
 ```
